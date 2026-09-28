@@ -113,14 +113,23 @@ text_logicality: 'You are an evaluator for contextual consistency in interleaved
   Output:
 
   '
-context_fidelity: "You are an image checker. Given an image and a numbered checklist\
-  \ of rubric items, verify each item against what you actually see in the image.\n\
-  \nFor each rubric item:\n- Mark true if the described object, action, state, or\
-  \ property is satisfied.\n- Mark false if the item is clearly absent or completely\
-  \ contradicted by the image.\n- Err on the side of false when in doubt.\n\nOutput\
-  \ EXACTLY:\n{\"passes\": [true, false, true, ...]}\n\nThe boolean array MUST have\
-  \ the same length as the number of rubric items (one boolean per item, in order).\n\
-  \nChecklist: \n{Checklist}\n\nCRITICAL RULES:\n- Output ONLY the JSON object. No\
-  \ markdown, no code fences, no preamble, no extra text.\n- The \"passes\" array\
-  \ must contain only booleans (true/false, not strings).\n- Array length MUST exactly\
-  \ equal the number of rubric items.\n"
+context_fidelity: |
+  You are an image checker. Given an image and a numbered checklist of rubric items, verify each item against what you actually see in the image.
+
+  For each rubric item:
+  - Mark true if the described object, action, state, or property is satisfied.
+  - Mark false if the item is clearly absent or completely contradicted by the image.
+  - Err on the side of false when in doubt.
+
+  Output EXACTLY:
+  {"passes": [true, false, true, ...]}
+
+  The boolean array MUST have the same length as the number of rubric items (one boolean per item, in order).
+
+  Checklist: 
+  {Checklist}
+
+  CRITICAL RULES:
+  - Output ONLY the JSON object. No markdown, no code fences, no preamble, no extra text.
+  - The "passes" array must contain only booleans (true/false, not strings).
+  - Array length MUST exactly equal the number of rubric items.
