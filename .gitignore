@@ -13,5 +13,6 @@ __pycache__/
 /experts/.cache/
 
 # Benchmark images, downloaded archives, and Hugging Face cache
+/archives/
 /images/
 /.cache/

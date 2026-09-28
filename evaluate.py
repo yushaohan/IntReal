@@ -4,7 +4,6 @@
 import argparse
 import asyncio
 import json
-import re
 import sys
 import time
 from pathlib import Path
@@ -13,14 +12,6 @@ import yaml
 from tqdm import tqdm
 
 from metrics import MetricsEngine
-
-
-def parse_run_name(value: str) -> str:
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value):
-        raise argparse.ArgumentTypeError(
-            "run name must start with a letter or digit and contain only letters, digits, '.', '_' or '-'"
-        )
-    return value
 
 
 def load_jsonl(path: Path):
@@ -74,8 +65,7 @@ async def main_async(args):
 
     benchmark_path = Path("benchmark") / f"{args.benchmark}.jsonl"
     model_output_path = output_dir / args.model / f"{args.benchmark}.jsonl"
-    result_stem = f"{args.benchmark}-{args.run_name}" if args.run_name else args.benchmark
-    result_path = result_dir / args.model / f"{result_stem}.jsonl"
+    result_path = result_dir / args.model / f"{args.benchmark}.jsonl"
 
     if not benchmark_path.exists():
         print(f"[FATAL] Benchmark not found: {benchmark_path}", file=sys.stderr)
@@ -173,8 +163,6 @@ def main():
     parser.add_argument("--config-dir", default="config", help="Path to config directory")
     parser.add_argument("--output-dir", default="output", help="Path to output directory")
     parser.add_argument("--result-dir", default="result", help="Path to result directory")
-    parser.add_argument("--run-name", type=parse_run_name, default=None,
-                        help="Optional run name; writes {benchmark}-{run_name}.jsonl")
     parser.add_argument("--concurrency", type=int, default=20,
                         help="Evaluation concurrency for LLM API calls")
     args = parser.parse_args()

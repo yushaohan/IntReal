@@ -14,8 +14,7 @@ def _build_rubric_checklist(rubrics):
 async def _verify_rubrics(engine, rubrics, image_path):
     """Send one image + numbered rubric list to VLM, return passes array."""
     cfg = engine.metrics_config["llm"]["context_fidelity"]
-    api_name = cfg["api"]
-    api_config = engine.experts_config["api"][api_name]
+    api_config = engine.experts_config["api"]
     temperature = cfg["temperature"]
     max_tokens = cfg["max_tokens"]
     max_retries = engine.metrics_config.get("max_retry", 0)

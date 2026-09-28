@@ -32,8 +32,7 @@ def _build_prompt(engine, benchmark_item, output_item):
 
 async def _call_and_score(engine, prompt, benchmark_id):
     cfg = engine.metrics_config["llm"]["text_richness"]
-    api_name = cfg["api"]
-    api_config = engine.experts_config["api"][api_name]
+    api_config = engine.experts_config["api"]
     temperature = cfg["temperature"]
     max_tokens = cfg["max_tokens"]
     max_retries = engine.metrics_config.get("max_retry", 0)

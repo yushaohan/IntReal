@@ -18,15 +18,12 @@ max_retry: 3
 
 llm:
   text_richness:
-    api: llm-api
     temperature: 0.0
     max_tokens: 1024
   text_logicality:
-    api: llm-api
     temperature: 0.0
     max_tokens: 1024
   context_fidelity:
-    api: vlm-api
     temperature: 0.0
     max_tokens: 1024
 
