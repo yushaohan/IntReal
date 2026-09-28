@@ -5,3 +5,13 @@ __pycache__/
 .env.*
 !.env.example
 .DS_Store
+
+# Downloaded expert models (keep the RALI inference adapter)
+/experts/DINOv3/
+/experts/RALI/*
+!/experts/RALI/rali_scorer.py
+/experts/.cache/
+
+# Benchmark images, downloaded archives, and Hugging Face cache
+/images/
+/.cache/

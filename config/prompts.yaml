@@ -1,0 +1,126 @@
+text_richness: 'You are an expert evaluator comparing two text responses to the same
+  prompt.
+
+
+  Task:
+
+  Given a PROMPT and two RESPONSE texts, evaluate which response is better in terms
+  of informativeness, completeness, and conciseness.
+
+
+  Evaluation Criteria:
+
+  1. Informativeness: Does the response provide meaningful and useful content that
+  genuinely helps the user?
+
+  2. Completeness: Does the response adequately address the full scope of the prompt
+  without leaving key aspects unaddressed?
+
+  3. Conciseness: Does the response avoid unnecessary repetition, filler content,
+  or verbosity that dilutes the core information?
+
+
+  Important Rules:
+
+  - Evaluate ONLY the textual components. Ignore images or image placeholders.
+
+  - Compare the two responses directly against each other.
+
+  - Do NOT let response length bias your judgment. A shorter response can be better
+  if it is more precise.
+
+  - You MUST pick a winner (1 or 2) unless the two responses are truly indistinguishable
+  in quality. Only output winner: 0 as a last resort when no meaningful difference
+  exists.
+
+
+  Output Format:
+
+  {"winner": 1} if RESPONSE 1 is better.
+
+  {"winner": 2} if RESPONSE 2 is better.
+
+  {"winner": 0} if the two are roughly equal in quality.
+
+
+  Input:
+
+  Prompt: {prompt}
+
+  RESPONSE 1: {response_1}
+
+  RESPONSE 2: {response_2}
+
+
+  Output:
+
+  '
+text_logicality: 'You are an evaluator for contextual consistency in interleaved text-image
+  generation tasks.
+
+
+  Task:
+
+  Determine whether the MODEL RESPONSE is logically consistent, coherent, and free
+  from severe hallucinations or logical leaps based on the PROMPT and contextual common
+  sense.
+
+
+  Evaluation Criteria:
+
+
+  1. Context consistency: The response must strictly follow the context, entities,
+  facts, and constraints provided in the prompt. It should not contradict prior information.
+
+
+  2. Logical coherence: The response must be a smooth and sensible continuation. It
+  should focus on the same topic/event without abrupt topic shifts or sudden logical
+  leaps.
+
+
+  3. Real-world Factuality:
+
+  - For creative/fictional tasks (e.g., storytelling, sci-fi), allow for imaginative
+  elements, judging only by internal consistency.
+
+  - For non-creative/factual tasks, the response must not severely contradict common
+  sense or real-world logic.
+
+
+  Important: The model response is extracted from an interleaved text-image sequence.
+  It may contain placeholders like `<image>` or other special tokens. You should IGNORE
+  these placeholders and evaluate ONLY the logical coherence and factuality of the
+  actual text content.
+
+
+  Input:
+
+  Prompt: {prompt}
+
+  Model Response: {model_text}
+
+
+  Output Format:
+
+  You must output ONLY a single valid JSON object and nothing else. No explanations,
+  no analysis, no markdown.
+
+  {"coherent": true} if the model response is consistent.
+
+  {"coherent": false} if the model response is inconsistent.
+
+
+  Output:
+
+  '
+context_fidelity: "You are an image checker. Given an image and a numbered checklist\
+  \ of rubric items, verify each item against what you actually see in the image.\n\
+  \nFor each rubric item:\n- Mark true if the described object, action, state, or\
+  \ property is satisfied.\n- Mark false if the item is clearly absent or completely\
+  \ contradicted by the image.\n- Err on the side of false when in doubt.\n\nOutput\
+  \ EXACTLY:\n{\"passes\": [true, false, true, ...]}\n\nThe boolean array MUST have\
+  \ the same length as the number of rubric items (one boolean per item, in order).\n\
+  \nChecklist: \n{Checklist}\n\nCRITICAL RULES:\n- Output ONLY the JSON object. No\
+  \ markdown, no code fences, no preamble, no extra text.\n- The \"passes\" array\
+  \ must contain only booleans (true/false, not strings).\n- Array length MUST exactly\
+  \ equal the number of rubric items.\n"

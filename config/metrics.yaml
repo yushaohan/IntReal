@@ -1,0 +1,34 @@
+enabled:
+  text_richness: true
+  text_logicality: true
+  image_aesthetic: true
+  image_diversity: true
+  quantity_compliance: true
+  context_fidelity: true
+  subject_consistency: true
+
+aesthetic:
+  aesthetic_min: 1.0
+  aesthetic_max: 5.0
+
+thresholds:
+  image_diversity: 0.85
+
+max_retry: 3
+
+llm:
+  text_richness:
+    api: llm-api
+    temperature: 0.0
+    max_tokens: 1024
+  text_logicality:
+    api: llm-api
+    temperature: 0.0
+    max_tokens: 1024
+  context_fidelity:
+    api: vlm-api
+    temperature: 0.0
+    max_tokens: 1024
+
+local:
+  batch_size: 1
