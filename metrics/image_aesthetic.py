@@ -1,5 +1,6 @@
 """Image aesthetic quality metric using RALI."""
 
+import torch
 from PIL import Image
 
 from .utils import extract_images
@@ -12,7 +13,8 @@ def compute(engine, benchmark_item, output_item) -> float | None:
 
     scorer = engine.get_rali_scorer()
     images = [Image.open(path).convert("RGB") for path in image_paths]
-    raw_scores = scorer.model(images)
+    with torch.inference_mode():
+        raw_scores = scorer.model(images)
     cfg = engine.metrics_config["aesthetic"]
     aesthetic_min = cfg["aesthetic_min"]
     aesthetic_max = cfg["aesthetic_max"]

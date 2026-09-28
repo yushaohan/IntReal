@@ -48,10 +48,10 @@ class MetricsEngine:
             local_dir = Path(self.experts_config["local"]["dino"]["path"])
             device = self.experts_config["local"]["dino"].get("cuda", self.device)
             processor = AutoImageProcessor.from_pretrained(
-                local_dir, local_files_only=True, use_fast=True
+                local_dir, local_files_only=True, backend="torchvision"
             )
             model = AutoModel.from_pretrained(
-                local_dir, local_files_only=True, torch_dtype=torch.float32
+                local_dir, local_files_only=True, dtype=torch.float32
             )
             model.to(device)
             model.eval()

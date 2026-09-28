@@ -1,18 +1,36 @@
+# Python and local environments
 __pycache__/
 *.py[cod]
 .venv/
+
+# Local API credentials
 .env
 .env.*
 !.env.example
+
+# Tool caches and logs
+.cache/
+.pytest_cache/
+.ruff_cache/
+*.log
 .DS_Store
 
 # Downloaded expert models (keep the RALI inference adapter)
 /experts/DINOv3/
 /experts/RALI/*
 !/experts/RALI/rali_scorer.py
-/experts/.cache/
 
-# Benchmark images, downloaded archives, and Hugging Face cache
-/archives/
+# Benchmark images and downloaded archives; keep benchmark JSONL files
 /images/
-/.cache/
+/archives/
+
+# Generated model outputs; keep the bundled test case
+/output/*
+!/output/test/
+/output/test/*
+!/output/test/test.jsonl
+!/output/test/images/
+
+# Evaluation results 
+/result/
+

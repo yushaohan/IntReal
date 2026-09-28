@@ -25,7 +25,10 @@ import torch.nn.functional as F
 from PIL import Image
 from transformers import CLIPModel, CLIPProcessor
 
-# Patch CLIPModel.get_image_features for transformers>=4.56 compatibility.
+# DINOv3 and RALI share one Transformers environment. In Transformers 5.5.4,
+# CLIPModel.get_image_features returns an output object whose pooler_output is
+# already visually projected. Unwrap it to preserve the tensor interface used
+# by the official RALI scorer, while retaining support for tensor-returning versions.
 _CLIP_GET_IMAGE_FEATURES_ORIG = None
 
 
