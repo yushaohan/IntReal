@@ -165,6 +165,7 @@ name = "intreal"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "huggingface-hub" },
     { name = "joblib" },
     { name = "numpy" },
     { name = "openai" },
@@ -179,6 +180,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "huggingface-hub", specifier = "==1.33.0" },
     { name = "joblib", specifier = "==1.5.3" },
     { name = "numpy", specifier = "==2.4.4" },
     { name = "openai", specifier = "==2.31.0" },

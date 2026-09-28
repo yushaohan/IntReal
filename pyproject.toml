@@ -7,6 +7,7 @@ dependencies = [
     "torch==2.8.0",
     "torchvision==0.23.0",
     "transformers==5.5.4",
+    "huggingface-hub==1.33.0",
     "pillow==12.2.0",
     "numpy==2.4.4",
     "joblib==1.5.3",

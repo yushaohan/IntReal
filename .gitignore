@@ -25,12 +25,12 @@ __pycache__/
 /archives/
 
 # Generated model outputs; keep the bundled test case
-/output/*
-!/output/test/
-/output/test/*
-!/output/test/test.jsonl
-!/output/test/images/
+/outputs/*
+!/outputs/test/
+/outputs/test/*
+!/outputs/test/test.jsonl
+!/outputs/test/images/
 
 # Evaluation results 
-/result/
+/results/
 

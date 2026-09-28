@@ -44,16 +44,14 @@ async def compute_async(engine, benchmark_item, output_item, tf_item=None):
 
     image_scores = []
     for (_, rubrics), gen_image_path in zip(rubric_entries, response_images):
-        try:
-            passes = await _verify_rubrics(engine, rubrics, gen_image_path)
-            n_pass = sum(1 for p in passes if p)
-            n_total = len(rubrics)
-            if n_pass == 0:
-                image_scores.append(0.0)
-            else:
-                score = 0.5 + (n_pass - 1) * 0.5 / (n_total - 1)
-                image_scores.append(score)
-        except Exception:
+        # Let MetricsEngine log failures and record this metric as null.
+        passes = await _verify_rubrics(engine, rubrics, gen_image_path)
+        n_pass = sum(1 for p in passes if p)
+        n_total = len(rubrics)
+        if n_pass == 0:
             image_scores.append(0.0)
+        else:
+            score = 0.5 + (n_pass - 1) * 0.5 / (n_total - 1)
+            image_scores.append(score)
 
     return image_scores

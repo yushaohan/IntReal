@@ -158,11 +158,11 @@ async def main_async(args):
 
 def main():
     parser = argparse.ArgumentParser(description="IntReal model evaluation")
-    parser.add_argument("--model", required=True, help="Model name (must match output/ dir)")
+    parser.add_argument("--model", required=True, help="Model name (must match outputs/ dir)")
     parser.add_argument("--benchmark", required=True, help="Benchmark name (must match benchmark/ file)")
     parser.add_argument("--config-dir", default="config", help="Path to config directory")
-    parser.add_argument("--output-dir", default="output", help="Path to output directory")
-    parser.add_argument("--result-dir", default="result", help="Path to result directory")
+    parser.add_argument("--output-dir", default="outputs", help="Path to output directory")
+    parser.add_argument("--result-dir", default="results", help="Path to result directory")
     parser.add_argument("--concurrency", type=int, default=20,
                         help="Evaluation concurrency for LLM API calls")
     args = parser.parse_args()

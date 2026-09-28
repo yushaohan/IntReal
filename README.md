@@ -3,14 +3,14 @@
 # IntReal: A Real-World Dataset and Benchmark for Multimodal Interleaved Generation
 
 [Shaohan Yu](https://yushaohan.github.io/)<sup>1,2</sup>,
-[Qin Jie](https://qinjie-ai.top/)<sup>2</sup>,
+[Jie Qin](https://jieqin-ai.top/)<sup>2</sup>,
 [Wende Tan](https://scholar.google.com/citations?user=IDvZ0CcAAAAJ)<sup>3</sup>,
 [Haiwen Diao](https://paranioar.github.io/)<sup>4</sup>,
 [Limeng Qiao](https://scholar.google.com/citations?user=3PFZAg0AAAAJ&hl=en&oi=ao)<sup>2</sup>,
 [Yueming Lyu](https://yueming-ai.top/)<sup>1</sup>,
 [Chenyang Si](http://chenyangsi.top/)<sup>1,†</sup>
 
-<sup>1</sup> [PRLab, Nanjing University](https://prlab-nju.com/) &nbsp;
+<sup>1</sup> [PRLab, Nanjing University](https://prlab-nju.com/nju/) &nbsp;
 <sup>2</sup> [Meituan LongCat](https://longcat.ai/)
 <br>
 <sup>3</sup> [Imperial College London](https://www.imperial.ac.uk/) &nbsp;
@@ -37,9 +37,9 @@ Once everything is ready, create a `.env` file in the repository root with your 
 
 ```bash
 cat > .env <<'EOF'
-INTREAL_API_MODEL=gemma4
-INTREAL_API_BASE_URL=http://localhost:8000/v1
-INTREAL_API_KEY=EMPTY
+export INTREAL_API_MODEL=gemma4
+export INTREAL_API_BASE_URL=http://localhost:8000/v1
+export INTREAL_API_KEY=EMPTY
 EOF
 ```
 
@@ -51,7 +51,70 @@ Run the bundled single-sample test:
 uv run --locked --env-file .env python evaluate.py --model test --benchmark test
 ```
 
-If the environment is configured correctly, the evaluation results are saved to `result/test/test.jsonl`.
+If the environment is configured correctly, the evaluation results are saved to `results/test/test.jsonl`.
+
+## 🤖 Inference
+Coming Soon
+
+## 🔍 Evaluation
+
+After generation, save model outputs as `outputs/<model_name>/<benchmark_name>.jsonl`, with one JSON object per sample:
+
+```text
+outputs/
+└── my-model/
+    ├── IntReal.jsonl
+    └── images/
+        ├── sf_0001.png
+        └── tf_0001.png
+```
+
+Each record stores the sample ID and an ordered sequence of text and image blocks. For example (formatted across multiple lines for readability):
+
+```json
+{
+  "model": "my-model",
+  "eval_set": "IntReal",
+  "eval_set_id": 1,
+  "response_sf": [
+    {"type": "text", "content": "The first step is..."},
+    {"type": "image", "content": "outputs/my-model/images/sf_0001.png"},
+    {"type": "text", "content": "Next..."}
+  ],
+  "response_tf": [
+    {"type": "image", "content": "outputs/my-model/images/tf_0001.png"}
+  ]
+}
+```
+
+`eval_set_id` must match the sample's `id` in `benchmark/<benchmark_name>.jsonl`. Image paths must point to local files; relative paths are resolved from the repository root. Preserve the generation order of the blocks.
+
+`response_sf` corresponds to **holistic evaluation** in our paper. Since this setting involves open-ended generation, we refer to it as **self-forcing (SF)** by analogy. `response_tf` corresponds to **fine-grained evaluation**, where generation is conditioned on ground-truth context; we refer to this setting as **teacher-forcing (TF)** by analogy.
+
+Activate the environment and export the API settings from `.env`, then run evaluation from the repository root:
+
+```bash
+source .venv/bin/activate
+source .env
+python evaluate.py --model my-model --benchmark IntReal
+```
+
+The results are written to `results/my-model/IntReal.jsonl`.
+
+Optional arguments:
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--concurrency` | `20` | Maximum number of samples evaluated concurrently. Lower this to reduce API and local-model load. |
+| `--config-dir` | `config` | Directory containing `experts.yaml`, `metrics.yaml`, and `prompts.yaml`. |
+| `--output-dir` | `outputs` | Root directory of model outputs; the runner reads `<output-dir>/<model>/<benchmark>.jsonl`. |
+| `--result-dir` | `results` | Root directory for evaluation results. |
+
+For example: `python evaluate.py --model my-model --benchmark IntReal --concurrency 4 --result-dir results-new`.
+
+
+## ©️ Acknowledgement & Licence
+Coming Soon
 
 ## 📧 Contact
 
