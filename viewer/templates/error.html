@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Unable to display data{% endblock %}
+{% block content %}<div class="empty-state"><h1>Unable to display data</h1><p>{{ message }}</p><p>Check the selected files or return to the benchmark browser.</p><a class="button primary" href="{{ url_for('benchmark') }}">Browse benchmarks</a></div>{% endblock %}

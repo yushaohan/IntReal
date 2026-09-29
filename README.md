@@ -48,7 +48,8 @@ Use the model name exposed by your service and replace the URL with its actual a
 Run the bundled single-sample test:
 
 ```bash
-uv run --locked --env-file .env python evaluate.py --model test --benchmark test
+source .env
+python evaluate.py --model test --benchmark test
 ```
 
 If the environment is configured correctly, the evaluation results are saved to `results/test/test.jsonl`.
@@ -112,6 +113,17 @@ Optional arguments:
 
 For example: `python evaluate.py --model my-model --benchmark IntReal --concurrency 4 --result-dir results-new`.
 
+
+## 🖼️ Viewer
+
+Browse benchmarks, compare reference and SF/TF responses, and export evaluation reports as CSV:
+
+```bash
+source .venv/bin/activate
+python -m viewer.app
+```
+
+Open `http://127.0.0.1:8420`. The viewer reads `benchmark/`, `outputs/`, and `results/` without loading models or calling APIs.
 
 ## ©️ Acknowledgement & Licence
 Coming Soon

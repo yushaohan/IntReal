@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Report{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Understand the results</p><h1>Report</h1></div></div>
+<form class="toolbar" method="get">
+  <label>Benchmark<select name="benchmark">{% for name in benchmarks %}<option {% if name == benchmark %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+  <label>View<select name="view">{% for key, label in [('metrics', 'Metrics'), ('categories', 'Categories')] %}<option value="{{ key }}" {% if view == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+  <button class="button primary" type="submit">View</button>
+  {% if benchmark %}<a class="button export" href="{{ url_for('export_report', benchmark=benchmark, view=view) }}">Download CSV ↓</a>{% endif %}
+</form>
+{% if not rows %}
+<div class="empty-state"><h2>No evaluation results yet</h2><p>Run <code>evaluate.py</code> to create <code>results/&lt;model&gt;/&lt;benchmark&gt;.jsonl</code>, then refresh this page.</p></div>
+{% else %}
+<div class="report-note"><strong>Scores × 100.</strong> Missing, null, and non-finite scores are excluded, never replaced with zero.</div>
+<div class="panel table-wrap"><table>
+{% if view == 'metrics' %}
+  <caption>{{ benchmark }} · Metric averages</caption>
+  <thead><tr><th scope="col">Model</th><th scope="col">Samples</th>{% for label in metric_labels.values() %}<th scope="col">{{ label }}</th>{% endfor %}<th scope="col">Overall</th></tr></thead>
+  <tbody>{% for row in rows %}<tr><th scope="row">{{ row.model }}</th><td><span class="{% if row.count != row.expected %}incomplete{% endif %}">{{ row.count }} / {{ row.expected }}</span>{% if row.extra %}<small>{{ row.extra }} unknown IDs excluded</small>{% endif %}</td>{% for key in metric_labels %}<td{% if row.metrics[key].count != row.expected %} class="incomplete"{% endif %}>{{ row.metrics[key].score | score }}</td>{% endfor %}<td class="overall{% if row.incomplete %} incomplete{% endif %}">{{ row.overall | score }}</td></tr>{% endfor %}</tbody>
+{% elif view == 'categories' %}
+  <caption>{{ benchmark }} · Category averages</caption>
+  <thead><tr><th scope="col">Model</th>{% for cat in categories %}<th scope="col">{{ cat | capitalize }}</th>{% endfor %}<th scope="col">Mean</th></tr></thead>
+  <tbody>{% for row in rows %}<tr><th scope="row">{{ row.model }}{% if row.extra %}<small>{{ row.extra }} unknown IDs excluded</small>{% endif %}</th>{% for cat in categories %}{% set entry = row.categories[cat] %}<td{% if entry.incomplete %} class="incomplete"{% endif %}>{{ entry.score | score }}</td>{% endfor %}<td class="overall{% if row.categories_incomplete %} incomplete{% endif %}">{{ row.category_mean | score }}</td></tr>{% endfor %}</tbody>
+{% endif %}
+</table></div>
+<p class="report-note">Red cells indicate incomplete evaluation: some benchmark samples are missing a valid score for the corresponding metric. Red category or overall cells indicate that one or more included metrics are incomplete.</p>
+<p class="report-method">{% if view == 'metrics' %}Each column averages valid sample scores for that metric. Overall is the unweighted mean of available metric averages.{% elif view == 'categories' %}Story and tutorial use seven metrics; knowledge and planning use six, excluding only subject consistency. Each category averages its available metric means; Mean averages available categories equally.{% endif %}</p>
+{% endif %}
+{% endblock %}

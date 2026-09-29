@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import blocks, picture, pager, reference_blocks %}
+{% block title %}{{ view | capitalize }}{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">Explore the evaluation</p><h1>{{ 'Benchmark' if view == 'benchmark' else 'Response' }}</h1></div>
+</div>
+<form class="toolbar" method="get">
+  <label>Benchmark<select name="benchmark" data-reset-model>{% for name in benchmarks %}<option {% if name == benchmark %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+  {% if view == 'response' %}<label>Model<select name="model" id="model-select" {% if not models %}disabled{% endif %}>{% for name in models %}<option {% if name == model %}selected{% endif %}>{{ name }}</option>{% else %}<option>No model outputs</option>{% endfor %}</select></label>{% endif %}
+  <label>Category<select name="category"><option value="">All categories</option>{% for name in categories %}<option value="{{ name }}" {% if name == selected_category %}selected{% endif %}>{{ name | capitalize }}</option>{% endfor %}</select></label>
+  <label>Sample ID<input name="id" placeholder="Jump to ID" autocomplete="off"></label>
+  <button class="button primary" type="submit">View</button>
+</form>
+{% if not benchmarks %}
+<div class="empty-state"><h2>No benchmarks found</h2><p>Add a JSONL file to <code>benchmark/</code> to begin.</p></div>
+{% elif not sample %}
+<div class="empty-state"><h2>No samples in this selection</h2><p>Choose another category or benchmark.</p></div>
+{% else %}
+{{ pager(previous, following, page, total) }}
+<section class="panel prompt-panel">
+  <div class="panel-heading"><h2>Sample {{ sample.id }}</h2><span class="badge">{{ sample_category or sample.get('source', 'Uncategorized') }}</span></div>
+  <div class="prompt-content{% if sample.get('prompt', {}).get('images') %} has-images{% endif %}">
+    <div class="text-block prompt-text">{{ sample.get('prompt', {}).get('text', '') }}</div>
+    {% if sample.get('prompt', {}).get('images') %}<div class="prompt-images">{% for path in sample.prompt.images %}{{ picture(path, 'Input image ' ~ loop.index) }}{% endfor %}</div>{% endif %}
+  </div>
+</section>
+{% if view == 'response' and generated and generated.metrics %}
+<details class="panel metrics-panel" open>
+  <summary>Sample scores <span class="muted">Raw metric scale</span></summary>
+  <div class="metric-strip">{% for key, label in metric_labels.items() %}<div><span>{{ label }}</span><strong>{{ generated.metrics.get(key) | score }}</strong></div>{% endfor %}</div>
+  {% for key in ['context_fidelity', 'subject_consistency'] %}
+    {% if generated.metrics.get(key ~ '_per_pos') is not none %}<p class="position-scores"><strong>{{ metric_labels[key] }} by position:</strong> {% for value in generated.metrics[key ~ '_per_pos'] %}{{ value | score }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+  {% endfor %}
+</details>
+{% endif %}
+<div class="sequences {% if view == 'response' %}comparison{% else %}benchmark-reference{% endif %}">
+  <section class="panel sequence"><div class="panel-heading"><h2>Reference</h2><span class="badge">Ground truth</span></div>{% if view == 'benchmark' %}{{ reference_blocks(sample.get('golden_result', [])) }}{% else %}{{ blocks(sample.get('golden_result', []), true) }}{% endif %}</section>
+  {% if view == 'response' %}
+  <section class="panel sequence"><div class="panel-heading"><h2>Holistic</h2><span class="badge accent">SF</span></div>{% if generated %}{{ blocks(generated.sf) }}{% else %}<p class="empty-inline">No response for this sample.{% if not models %} Add model outputs under <code>outputs/</code>.{% endif %}</p>{% endif %}</section>
+  <section class="panel sequence"><div class="panel-heading"><h2>Fine-grained</h2><span class="badge accent">TF</span></div>{% if generated and generated.tf is not none %}{{ blocks(generated.tf) }}{% else %}<p class="empty-inline">No teacher-forcing response available.</p>{% endif %}</section>
+  {% endif %}
+</div>
+{{ pager(previous, following, page, total) }}
+{% endif %}
+{% endblock %}

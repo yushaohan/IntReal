@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Viewer{% endblock %} · IntReal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='viewer.css') }}">
+  <script defer src="{{ url_for('static', filename='viewer.js') }}"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('benchmark') }}">IntReal <span>Viewer</span></a>
+    <nav aria-label="Main navigation">
+      {% for endpoint, label in [('benchmark', 'Benchmark'), ('response', 'Response'), ('report', 'Report')] %}
+      <a href="{{ url_for(endpoint, benchmark=benchmark) if benchmark else url_for(endpoint) }}" {% if request.endpoint == endpoint %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <dialog id="image-dialog" aria-label="Image preview">
+    <button class="close-preview" type="button" aria-label="Close image preview">Close ×</button>
+    <img id="preview-image" alt="Expanded image">
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% macro picture(path, label) %}
+<figure>
+  <a class="image-link" href="{{ url_for('image', path=path) }}" target="_blank" rel="noopener" aria-label="Expand {{ label }}">
+    <img src="{{ url_for('image', path=path) }}" alt="{{ label }}" loading="lazy">
+  </a>
+  <figcaption>{{ label }} <span>Click to expand</span></figcaption>
+</figure>
+{% endmacro %}
+
+{% macro blocks(items, show_rubrics=false) %}
+{% set position = namespace(image=0) %}
+{% for block in items %}
+  {% if block.type == 'text' %}
+  <div class="text-block">{{ block.content }}</div>
+  {% elif block.type == 'image' %}
+  {% set position.image = position.image + 1 %}
+  {{ picture(block.content, 'Image ' ~ position.image) }}
+  {% if show_rubrics and block.rubrics %}
+  <details class="rubrics"><summary>Rubrics <span>{{ block.rubrics | length }}</span></summary><ol>{% for rubric in block.rubrics %}<li>{{ rubric }}</li>{% endfor %}</ol></details>
+  {% endif %}
+  {% endif %}
+{% else %}
+<p class="empty-inline">No content.</p>
+{% endfor %}
+{% endmacro %}
+
+{% macro pager(previous, following, page, total) %}
+<div class="pager">
+  {% if previous %}<a class="button" href="{{ previous }}">← Previous</a>{% else %}<span class="button disabled">← Previous</span>{% endif %}
+  <span>{{ page if total else 0 }} / {{ total }} samples</span>
+  {% if following %}<a class="button" href="{{ following }}">Next →</a>{% else %}<span class="button disabled">Next →</span>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro reference_row(texts, image=none, position=0) %}
+<div class="reference-row{% if image is none %} reference-text-only{% endif %}">
+  <div class="reference-copy">{% for text in texts %}<div class="text-block">{{ text }}</div>{% endfor %}</div>
+  {% if image is not none %}
+  <div class="reference-media">
+    {{ picture(image.content, 'Image ' ~ position) }}
+  </div>
+  {% if image.rubrics %}
+  <div class="rubrics reference-rubrics"><h3>Rubrics <span>{{ image.rubrics | length }}</span></h3><ol>{% for rubric in image.rubrics %}<li>{{ rubric }}</li>{% endfor %}</ol></div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro reference_blocks(items) %}
+{% set pending = namespace(texts=[], image=0) %}
+<div class="reference-rows">
+{% for block in items %}
+  {% if block.type == 'text' %}
+    {% set pending.texts = pending.texts + [block.content] %}
+  {% elif block.type == 'image' %}
+    {% set pending.image = pending.image + 1 %}
+    {{ reference_row(pending.texts, block, pending.image) }}
+    {% set pending.texts = [] %}
+  {% endif %}
+{% else %}
+  <p class="empty-inline">No content.</p>
+{% endfor %}
+{% if pending.texts %}{{ reference_row(pending.texts) }}{% endif %}
+</div>
+{% endmacro %}
