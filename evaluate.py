@@ -4,6 +4,8 @@
 import argparse
 import asyncio
 import json
+import os
+import shlex
 import sys
 import time
 from pathlib import Path
@@ -12,6 +14,52 @@ import yaml
 from tqdm import tqdm
 
 from metrics import MetricsEngine
+
+
+
+REQUIRED_API_ENV = ("INTREAL_API_MODEL", "INTREAL_API_BASE_URL", "INTREAL_API_KEY")
+
+
+def ensure_api_environment():
+    """Fill missing API settings from the adjacent .env, preserving shell values."""
+    missing = [name for name in REQUIRED_API_ENV if not os.environ.get(name)]
+    if not missing:
+        return
+
+    env_path = Path(__file__).resolve().parent / ".env"
+    if env_path.is_file():
+        try:
+            for line_number, line in enumerate(env_path.read_text(encoding="utf-8").splitlines(), 1):
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("export "):
+                    line = line[len("export "):].lstrip()
+                name, separator, raw_value = line.partition("=")
+                name = name.strip()
+                if not separator or name not in missing:
+                    continue
+                try:
+                    parts = shlex.split(raw_value, comments=True, posix=True)
+                except ValueError:
+                    raise ValueError(f"Invalid quoting in {env_path} at line {line_number}") from None
+                if len(parts) > 1:
+                    raise ValueError(f"Quote values containing spaces in {env_path} at line {line_number}")
+                value = parts[0] if parts else ""
+                if value:
+                    os.environ[name] = value
+        except (OSError, ValueError) as exc:
+            print(f"[FATAL] Cannot load API environment: {exc}", file=sys.stderr)
+            raise SystemExit(1) from None
+
+    missing = [name for name in REQUIRED_API_ENV if not os.environ.get(name)]
+    if missing:
+        print(
+            f"[FATAL] Required environment variables are missing or empty: {', '.join(missing)}. "
+            f"Export them in your shell or set them in {env_path}.",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
 
 
 def load_jsonl(path: Path):
@@ -52,6 +100,7 @@ async def evaluate_sample(engine, bench_item, out_item, tf_item, pbar, start_tim
 
 
 async def main_async(args):
+    ensure_api_environment()
     config_dir = Path(args.config_dir)
     output_dir = Path(args.output_dir)
     result_dir = Path(args.result_dir)

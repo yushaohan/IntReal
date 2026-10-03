@@ -43,12 +43,11 @@ export INTREAL_API_KEY=EMPTY
 EOF
 ```
 
-Use the model name exposed by your service and replace the URL with its actual address. If your service requires authentication, replace `EMPTY` with its API key. The `.env` file is excluded from Git.
+Use the model name exposed by your service and replace the URL with its actual address. If your service requires authentication, replace `EMPTY` with its API key. The `.env` file is excluded from Git. `evaluate.py` first checks the three variables in the shell environment, then automatically fills missing or empty values from the `.env` beside the script. Existing non-empty shell values take precedence. If any required value is still missing or empty, evaluation exits with an error before loading models.
 
 Run the bundled single-sample test:
 
 ```bash
-source .env
 python evaluate.py --model test --benchmark test
 ```
 
@@ -96,7 +95,6 @@ Activate the environment and export the API settings from `.env`, then run evalu
 
 ```bash
 source .venv/bin/activate
-source .env
 python evaluate.py --model my-model --benchmark IntReal
 ```
 

@@ -16,7 +16,7 @@
 {% if view == 'metrics' %}
   <caption>{{ benchmark }} · Metric averages</caption>
   <thead><tr><th scope="col">Model</th><th scope="col">Samples</th>{% for label in metric_labels.values() %}<th scope="col">{{ label }}</th>{% endfor %}<th scope="col">Overall</th></tr></thead>
-  <tbody>{% for row in rows %}<tr><th scope="row">{{ row.model }}</th><td><span class="{% if row.count != row.expected %}incomplete{% endif %}">{{ row.count }} / {{ row.expected }}</span>{% if row.extra %}<small>{{ row.extra }} unknown IDs excluded</small>{% endif %}</td>{% for key in metric_labels %}<td{% if row.metrics[key].count != row.expected %} class="incomplete"{% endif %}>{{ row.metrics[key].score | score }}</td>{% endfor %}<td class="overall{% if row.incomplete %} incomplete{% endif %}">{{ row.overall | score }}</td></tr>{% endfor %}</tbody>
+  <tbody>{% for row in rows %}<tr><th scope="row">{{ row.model }}</th><td><span class="{% if row.count != row.expected %}incomplete{% endif %}">{{ row.count }} / {{ row.expected }}</span>{% if row.extra %}<small>{{ row.extra }} unknown IDs excluded</small>{% endif %}</td>{% for key in metric_labels %}<td{% if row.metrics[key].count != row.metrics[key].expected %} class="incomplete"{% endif %}>{{ row.metrics[key].score | score }}</td>{% endfor %}<td class="overall{% if row.incomplete %} incomplete{% endif %}">{{ row.overall | score }}</td></tr>{% endfor %}</tbody>
 {% elif view == 'categories' %}
   <caption>{{ benchmark }} · Category averages</caption>
   <thead><tr><th scope="col">Model</th>{% for cat in categories %}<th scope="col">{{ cat | capitalize }}</th>{% endfor %}<th scope="col">Mean</th></tr></thead>
@@ -24,6 +24,6 @@
 {% endif %}
 </table></div>
 <p class="report-note">Red cells indicate incomplete evaluation: some benchmark samples are missing a valid score for the corresponding metric. Red category or overall cells indicate that one or more included metrics are incomplete.</p>
-<p class="report-method">{% if view == 'metrics' %}Each column averages valid sample scores for that metric. Overall is the unweighted mean of available metric averages.{% elif view == 'categories' %}Story and tutorial use seven metrics; knowledge and planning use six, excluding only subject consistency. Each category averages its available metric means; Mean averages available categories equally.{% endif %}</p>
+<p class="report-method">{% if view == 'metrics' %}Each column averages valid sample scores for that metric. Subject Consistency uses only story and tutorial samples. Overall is the unweighted mean of available metric averages.{% elif view == 'categories' %}Story and tutorial use seven metrics; knowledge and planning use six, excluding only subject consistency. Each category averages its available metric means; Mean averages available categories equally.{% endif %}</p>
 {% endif %}
 {% endblock %}

@@ -2,6 +2,8 @@
 
 import math
 
+from categories import subject_consistency_applicable
+
 from .data import CATEGORIES, METRICS, category
 
 
@@ -31,8 +33,16 @@ def benchmark_report(store, benchmark):
         results = store.records("results", model, benchmark)
         # Only benchmark IDs count. Record count alone cannot detect missing/extra IDs.
         matched = {key: row for key, row in results.items() if key in reference}
-        cells, overall = metric_summary(list(matched.values()), METRICS)
-        incomplete = any(cell["count"] != len(reference) for cell in cells.values())
+        cells = {}
+        for metric in METRICS:
+            ids = {
+                key for key, record in reference.items()
+                if metric != "subject_consistency" or subject_consistency_applicable(record)
+            }
+            summary, _ = metric_summary([matched[key] for key in ids if key in matched], [metric])
+            cells[metric] = {**summary[metric], "expected": len(ids)}
+        overall = mean([cell["score"] for cell in cells.values() if cell["score"] is not None])
+        incomplete = any(cell["count"] != cell["expected"] for cell in cells.values())
         categories = {}
         for name in CATEGORIES:
             ids = {key for key, row in reference.items() if category(row) == name}

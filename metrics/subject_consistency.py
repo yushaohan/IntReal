@@ -1,11 +1,12 @@
 """Subject consistency metric: DINOv3 cosine similarity between generated and golden images."""
 
+from categories import subject_consistency_applicable
+
 from .utils import extract_images
 
 
 def compute(engine, benchmark_item, output_item, tf_item=None):
-    source = benchmark_item.get("source", "")
-    if source not in ("storystream", "xiachufang"):
+    if not subject_consistency_applicable(benchmark_item):
         return None
 
     golden_result = benchmark_item.get("golden_result", [])

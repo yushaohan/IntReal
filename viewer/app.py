@@ -17,9 +17,6 @@ IMAGE_TYPES = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".tif", ".tiff"
 def create_app(root=ROOT, image_roots=()):
     app = Flask(__name__)
     store = Store(root)
-    allowed_images = [store.root / "images", store.root / "outputs"]
-    allowed_images += [Path(p).resolve() for p in image_roots]
-    allowed_images = [p.resolve() for p in allowed_images]
 
     @app.template_filter("score")
     def format_score(value):
@@ -142,8 +139,7 @@ def create_app(root=ROOT, image_roots=()):
         try:
             path = Path(value)
             path = (path if path.is_absolute() else store.root / path).resolve()
-            allowed = any(path.is_relative_to(root) for root in allowed_images)
-            if not allowed or path.suffix.lower() not in IMAGE_TYPES or not path.is_file():
+            if path.suffix.lower() not in IMAGE_TYPES or not path.is_file():
                 abort(404)
         except (ValueError, OSError, RuntimeError):
             abort(404)
@@ -157,7 +153,7 @@ def main():
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8420)
     parser.add_argument("--root", type=Path, default=ROOT, help="Repository containing benchmark/, outputs/, and results/")
-    parser.add_argument("--image-root", type=Path, action="append", default=[], help="Additional allowed image directory; may be repeated")
+    parser.add_argument("--image-root", type=Path, action="append", default=[], help="Compatibility option; local image directories are unrestricted")
     args = parser.parse_args()
     create_app(args.root, args.image_root).run(host=args.host, port=args.port, debug=False)
 

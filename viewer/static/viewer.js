@@ -18,7 +18,7 @@ dialog.addEventListener('close', () => preview.removeAttribute('src'));
 document.querySelectorAll('img[loading="lazy"]').forEach(img => {
   img.addEventListener('error', () => {
     img.closest('figure').classList.add('image-missing');
-    img.alt = 'Image unavailable — check the local path or allowed image directories';
+    img.alt = 'Image unavailable — check that the local image file exists';
   });
 });
 // A new benchmark may have a different set of model names.

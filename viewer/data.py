@@ -3,6 +3,8 @@
 import json
 from pathlib import Path
 
+from categories import CATEGORIES, SOURCE_CATEGORY, category
+
 METRICS = {
     "text_richness": "Text Richness",
     "text_logicality": "Text Logicality",
@@ -11,11 +13,6 @@ METRICS = {
     "quantity_compliance": "Quantity Compliance",
     "context_fidelity": "Context Fidelity",
     "subject_consistency": "Subject Consistency",
-}
-CATEGORIES = ("story", "knowledge", "planning", "tutorial")
-SOURCE_CATEGORY = {
-    "storystream": "story", "wikipedia": "knowledge",
-    "wikitravel": "planning", "wikivoyage": "planning", "xiachufang": "tutorial",
 }
 SEQUENCE_METRICS = {"context_fidelity", "subject_consistency"}
 
@@ -49,9 +46,6 @@ def read_index(path, id_key):
                 raise DataError(f"{path.name}, line {line_no}: {exc}") from exc
     return records
 
-
-def category(record):
-    return SOURCE_CATEGORY.get(record.get("source"))
 
 
 class Store:
