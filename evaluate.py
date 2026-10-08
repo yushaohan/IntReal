@@ -4,6 +4,7 @@
 import argparse
 import asyncio
 import json
+import math
 import os
 import shlex
 import sys
@@ -14,10 +15,31 @@ import yaml
 from tqdm import tqdm
 
 from metrics import MetricsEngine
+from categories import subject_consistency_applicable
 
 
 
 REQUIRED_API_ENV = ("INTREAL_API_MODEL", "INTREAL_API_BASE_URL", "INTREAL_API_KEY")
+METRIC_NAMES = (
+    "text_richness", "text_logicality", "image_aesthetic", "image_diversity",
+    "quantity_compliance", "context_fidelity", "subject_consistency",
+)
+
+
+def incomplete_metrics(metrics, benchmark_item, enabled):
+    """Return enabled metrics without a finite score, except inapplicable SC."""
+    if not isinstance(metrics, dict):
+        metrics = {}
+    missing = []
+    for name in METRIC_NAMES:
+        if not enabled.get(name, True):
+            continue
+        if name == "subject_consistency" and not subject_consistency_applicable(benchmark_item):
+            continue
+        value = metrics.get(name)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            missing.append(name)
+    return missing
 
 
 def ensure_api_environment():
@@ -79,6 +101,13 @@ async def evaluate_sample(engine, bench_item, out_item, tf_item, pbar, start_tim
         metrics = await engine.compute_all(bench_item, out_item, tf_item=tf_item)
         if is_real_mode:
             metrics["text_richness"] = 1.0
+
+        missing = incomplete_metrics(metrics, bench_item, engine.metrics_config.get("enabled", {}))
+        if missing:
+            print(f"[WARN] id={sample_id} incomplete metrics: {', '.join(missing)}; "
+                  "not written, will retry on the next run.", file=sys.stderr)
+            pbar.update(1)
+            return
 
         result_item = dict(out_item)
         result_item["response_sf"] = result_item.pop("response", [])
