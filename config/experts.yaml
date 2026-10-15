@@ -8,8 +8,8 @@ api:
 # Set cuda to cuda:0 (or another device) to use a GPU.
 local:
   aesthetic-predictor:
-    path: experts/RALI/
-    cuda: cpu
+    path: "${INTREAL_RALI_PATH:-experts/RALI/}"
+    cuda: "${INTREAL_RALI_DEVICE:-cpu}"
   dino:
-    path: experts/DINOv3/
-    cuda: cpu
+    path: "${INTREAL_DINO_PATH:-experts/DINOv3/}"
+    cuda: "${INTREAL_DINO_DEVICE:-cpu}"

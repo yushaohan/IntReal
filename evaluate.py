@@ -6,6 +6,7 @@ import asyncio
 import json
 import math
 import os
+import re
 import shlex
 import sys
 import time
@@ -20,6 +21,7 @@ from categories import subject_consistency_applicable
 
 
 REQUIRED_API_ENV = ("INTREAL_API_MODEL", "INTREAL_API_BASE_URL", "INTREAL_API_KEY")
+OPTIONAL_EXPERT_ENV = ("INTREAL_RALI_PATH", "INTREAL_RALI_DEVICE", "INTREAL_DINO_PATH", "INTREAL_DINO_DEVICE")
 METRIC_NAMES = (
     "text_richness", "text_logicality", "image_aesthetic", "image_diversity",
     "quantity_compliance", "context_fidelity", "subject_consistency",
@@ -44,7 +46,7 @@ def incomplete_metrics(metrics, benchmark_item, enabled):
 
 def ensure_api_environment():
     """Fill missing API settings from the adjacent .env, preserving shell values."""
-    missing = [name for name in REQUIRED_API_ENV if not os.environ.get(name)]
+    missing = [name for name in (*REQUIRED_API_ENV, *OPTIONAL_EXPERT_ENV) if not os.environ.get(name)]
     if not missing:
         return
 
@@ -141,7 +143,19 @@ async def main_async(args):
     with open(config_dir / "prompts.yaml", "r", encoding="utf-8") as f:
         prompts_config = yaml.safe_load(f)
 
-    benchmark_path = Path("benchmark") / f"{args.benchmark}.jsonl"
+    for expert in experts_config.get("local", {}).values():
+        for key in ("path", "cuda"):
+            value = expert.get(key)
+            if isinstance(value, str):
+                expert[key] = re.sub(
+                    r"\$\{([A-Z_][A-Z_0-9]*):-([^}]*)\}",
+                    lambda match: os.environ.get(match[1]) or match[2], value,
+                )
+
+    benchmark_arg = Path(args.benchmark)
+    benchmark_path = (benchmark_arg if benchmark_arg.suffix == ".jsonl"
+                      else Path("benchmark") / f"{args.benchmark}.jsonl")
+    args.benchmark = benchmark_path.stem
     model_output_path = output_dir / args.model / f"{args.benchmark}.jsonl"
     result_path = result_dir / args.model / f"{args.benchmark}.jsonl"
 
@@ -199,20 +213,27 @@ async def main_async(args):
         print(f"[WARN] {len(missing_in_benchmark)} output samples missing in benchmark: {missing_in_benchmark[:20]}", file=sys.stderr)
     if not common_ids:
         print("[FATAL] No matching samples found between benchmark and output.", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(2)
 
     already_done = set()
     if result_path.exists():
         try:
             for line in result_path.read_text(encoding="utf-8").splitlines():
                 if line.strip():
-                    already_done.add(json.loads(line)["eval_set_id"])
+                    item = json.loads(line)
+                    sample_id = item["eval_set_id"]
+                    if sample_id in bench_by_id and not incomplete_metrics(
+                        item.get("metrics"), bench_by_id[sample_id], enabled
+                    ):
+                        already_done.add(sample_id)
         except Exception:
             pass
     if already_done:
         common_ids = [i for i in common_ids if i not in already_done]
         print(f"[INFO] Resume mode: {len(already_done)} samples already done, {len(common_ids)} remaining.", file=sys.stderr)
     if not common_ids:
+        if set(bench_by_id) - already_done:
+            raise SystemExit(2)
         print("[DONE] All samples already evaluated. Nothing to do.", file=sys.stderr)
         return
 
@@ -232,12 +253,14 @@ async def main_async(args):
 
     avg_time = (time.time() - start_time) / len(common_ids)
     print(f"[DONE] Evaluated {len(common_ids)} samples, recorded {total_ref[0]}. Avg {avg_time:.2f}s/sample. Results written to {result_path}", file=sys.stderr)
+    if missing_in_output or total_ref[0] != len(common_ids):
+        raise SystemExit(2)
 
 
 def main():
     parser = argparse.ArgumentParser(description="IntReal model evaluation")
     parser.add_argument("--model", required=True, help="Model name (must match outputs/ dir)")
-    parser.add_argument("--benchmark", required=True, help="Benchmark name (must match benchmark/ file)")
+    parser.add_argument("--benchmark", default="IntReal", help="Benchmark name or JSONL path (default: IntReal)")
     parser.add_argument("--config-dir", default="config", help="Path to config directory")
     parser.add_argument("--output-dir", default="outputs", help="Path to output directory")
     parser.add_argument("--result-dir", default="results", help="Path to result directory")
