@@ -34,3 +34,6 @@ __pycache__/
 # Evaluation results 
 /results/
 
+
+# Local inference backend (clone separately)
+/inference/Bagel/

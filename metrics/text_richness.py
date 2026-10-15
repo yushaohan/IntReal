@@ -1,4 +1,6 @@
-"""Text richness metric: LLM comparative evaluation with position swap."""
+"""Average both response orders; ties score 1, and either failed direction fails the metric."""
+
+import asyncio
 
 from .utils import call_llm, extract_text
 
@@ -6,14 +8,12 @@ from .utils import call_llm, extract_text
 _WINNER_RE = r'"winner"\s*:\s*[012]'
 
 
-def _build_prompt(engine, benchmark_item, output_item):
-    benchmark_id = benchmark_item.get("id", 0)
+def _build_prompt(engine, benchmark_item, output_item, model_position):
     prompt_text = benchmark_item.get("prompt", {}).get("text", "")
     reference_text = extract_text(benchmark_item.get("golden_result", []))
     model_text = extract_text(output_item.get("response", []))
 
-    # Position swap based on benchmark id parity to debias
-    if benchmark_id % 2 == 0:
+    if model_position == 2:
         response_1 = reference_text
         response_2 = model_text
     else:
@@ -27,10 +27,10 @@ def _build_prompt(engine, benchmark_item, output_item):
         .replace("{response_1}", response_1)
         .replace("{response_2}", response_2)
     )
-    return prompt, benchmark_id
+    return prompt
 
 
-async def _call_and_score(engine, prompt, benchmark_id):
+async def _call_and_score(engine, prompt, model_position):
     cfg = engine.metrics_config["llm"]["text_richness"]
     api_config = engine.experts_config["api"]
     temperature = cfg["temperature"]
@@ -39,19 +39,19 @@ async def _call_and_score(engine, prompt, benchmark_id):
 
     result = await call_llm(api_config, prompt, temperature, max_tokens, max_retries,
                             format_regex=_WINNER_RE)
-    winner = result.get("winner", 0)
+    winner = result.get("winner")
+    if type(winner) is not int or winner not in (0, 1, 2):
+        raise ValueError("Expected integer winner in {0, 1, 2}")
 
     if winner == 0:
         return 1.0
 
-    # id%2==0: pos1=reference, pos2=model → model wins when winner==2
-    # id%2==1: pos1=model, pos2=reference → model wins when winner==1
-    if benchmark_id % 2 == 0:
-        return 1.0 if winner == 2 else 0.0
-    else:
-        return 1.0 if winner == 1 else 0.0
+    return 1.0 if winner == model_position else 0.0
 
 
 async def compute_async(engine, benchmark_item, output_item) -> float:
-    prompt, benchmark_id = _build_prompt(engine, benchmark_item, output_item)
-    return await _call_and_score(engine, prompt, benchmark_id)
+    scores = await asyncio.gather(*(
+        _call_and_score(engine, _build_prompt(engine, benchmark_item, output_item, position), position)
+        for position in (1, 2)
+    ))
+    return sum(scores) / 2
