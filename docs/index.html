@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="IntReal: A Real-World Dataset and Benchmark for Multimodal Interleaved Generation.">
+  <title>IntReal — Multimodal Interleaved Generation</title>
+  <link rel="stylesheet" href="./styles.css?v=18">
+  <script src="./main.js?v=5" defer></script>
+  <script src="./explore.js?v=3" defer></script>
+  <script src="./experiments.js?v=4" defer></script>
+  <script src="./reliability.js?v=1" defer></script>
+</head>
+<body>
+  <div class="sample-wall" aria-hidden="true" id="sample-wall"></div>
+  <div class="shade" aria-hidden="true"></div>
+
+  <main>
+  <section class="hero" aria-labelledby="project-title">
+    <div class="paper">
+      <h1 id="project-title">
+        <span class="project-name">IntReal<span class="colon">:</span></span>
+        <span class="paper-title">
+          <span>A Real-World Dataset and Benchmark</span>
+          <span>for Multimodal Interleaved Generation</span>
+        </span>
+      </h1>
+
+      <div class="paper-details">
+        <div class="authors" aria-label="Authors">
+          <div class="author-row">
+            <a href="https://yushaohan.github.io/" target="_blank" rel="noopener noreferrer">Shaohan Yu<sup>1,2</sup></a>
+            <a href="https://jieqin-ai.top/" target="_blank" rel="noopener noreferrer">Jie Qin<sup>2</sup></a>
+            <a href="https://scholar.google.com/citations?user=IDvZ0CcAAAAJ" target="_blank" rel="noopener noreferrer">Wende Tan<sup>3</sup></a>
+            <a href="https://paranioar.github.io/" target="_blank" rel="noopener noreferrer">Haiwen Diao<sup>4</sup></a>
+          </div>
+          <div class="author-row">
+            <a href="https://scholar.google.com/citations?user=3PFZAg0AAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer">Limeng Qiao<sup>2</sup></a>
+            <a href="https://yueming-ai.top/" target="_blank" rel="noopener noreferrer">Yueming Lyu<sup>1</sup></a>
+            <a href="https://chenyangsi.top/" target="_blank" rel="noopener noreferrer">Chenyang Si<sup>1,†</sup></a>
+          </div>
+        </div>
+        <div class="affiliations" aria-label="Affiliations">
+          <a href="https://prlab-nju.com/nju/" target="_blank" rel="noopener noreferrer"><sup>1</sup>PRLab, Nanjing University</a>
+          <a href="https://longcat.ai/" target="_blank" rel="noopener noreferrer"><sup>2</sup>Meituan LongCat</a>
+          <a href="https://www.imperial.ac.uk/" target="_blank" rel="noopener noreferrer"><sup>3</sup>Imperial College London</a>
+          <a href="https://www.ntu.edu.sg/s-lab" target="_blank" rel="noopener noreferrer"><sup>4</sup>S-Lab, Nanyang Technological University</a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="resources" aria-label="Project resources">
+      <a class="resource" href="" aria-disabled="true">
+        <img class="resource-icon" src="./assets/icons/link.svg" alt="" aria-hidden="true" width="22" height="22">
+        <span class="resource-name">Paper</span>
+      </a>
+      <a class="resource" href="" aria-disabled="true">
+        <img class="resource-icon" src="./assets/icons/github.svg" alt="" aria-hidden="true" width="22" height="22">
+        <span class="resource-name">Code</span>
+      </a>
+      <a class="resource" href="" aria-disabled="true">
+        <img class="resource-icon" src="./assets/icons/huggingface.svg" alt="" aria-hidden="true" width="22" height="22">
+        <span class="resource-name">Dataset</span>
+      </a>
+      <a class="resource" href="" aria-disabled="true">
+        <img class="resource-icon" src="./assets/icons/huggingface.svg" alt="" aria-hidden="true" width="22" height="22">
+        <span class="resource-name">Model</span>
+      </a>
+    </nav>
+  </section>
+
+  <section class="dataset-section" id="explore-dataset" aria-labelledby="dataset-title">
+    <div class="dataset-inner">
+      <header class="dataset-heading">
+        <h2 id="dataset-title">Explore <em>IntReal-100K</em></h2>
+        <p>High-quality interleaved data curated from a million-scale pool.</p>
+      </header>
+
+      <div class="dataset-layout" id="dataset-explorer" aria-busy="true">
+        <aside class="dataset-sidebar" aria-label="Dataset categories">
+          <div class="dataset-chart-wrap">
+            <svg class="dataset-chart" id="dataset-chart" viewBox="0 0 360 360" aria-label="Category distribution"></svg>
+          </div>
+          <div class="category-choices" id="category-choices" aria-label="Choose a category"></div>
+          <p class="chart-hint">Select a slice or category.</p>
+        </aside>
+
+        <div class="dataset-gallery">
+          <header class="gallery-heading">
+            <div class="gallery-category">
+              <h3 id="active-category">Planning</h3>
+              <p id="active-sources">Wikivoyage · Wikitravel</p>
+            </div>
+            <p class="category-share" id="active-share">26.11<span>%</span></p>
+          </header>
+          <div class="cover-viewport" id="cover-viewport" aria-label="Planning sample covers">
+            <div class="cover-track" id="cover-track"><p class="gallery-loading" id="gallery-status" role="status">Loading samples…</p></div>
+          </div>
+          <footer class="gallery-footer">
+            <p>Click a cover to explore the full sample.</p>
+          </footer>
+          <p class="sr-only" id="category-announcement" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+      <noscript><p class="explorer-fallback">Enable JavaScript to browse the four categories and open the samples.</p></noscript>
+    </div>
+  </section>
+
+  <section class="evaluation-section" id="evaluation-suite" aria-labelledby="evaluation-title">
+    <div class="evaluation-inner">
+      <header class="dataset-heading evaluation-heading">
+        <h2 id="evaluation-title"><em>IntReal</em> Evaluation Suite</h2>
+        <p>Coarse-to-fine diagnosis with expert models.</p>
+      </header>
+
+      <div class="evaluation-layout">
+        <div class="evaluation-methods" aria-label="Two complementary evaluation settings">
+          <article class="evaluation-method" aria-labelledby="holistic-title">
+            <h3 id="holistic-title">Holistic</h3>
+            <p class="method-description">Generate the full interleaved response.</p>
+            <figure class="method-figure holistic-figure">
+              <div class="holistic-flow">
+                <div class="flow-prompt"><span class="flow-label">Prompt</span><p>Make garlic bread step by step, using two images.</p></div>
+                <div class="flow-arrow" aria-hidden="true"><span>UMM</span><svg viewBox="0 0 40 16"><path d="M1 8h36m-7-6 7 6-7 6"/></svg></div>
+                <div class="generated-sequence">
+                  <div class="flow-tile text-tile" style="--step:0"><span class="flow-label">01 · Text</span><p>Melt butter gently, then stir in finely minced garlic.</p></div>
+                  <div class="flow-tile image-tile" style="--step:1"><span class="flow-label">Image</span><img src="./assets/evaluation/holistic-01.webp" alt="Generated image of garlic and butter in a pan" width="420" height="420" loading="lazy"></div>
+                  <div class="flow-tile text-tile" style="--step:2"><span class="flow-label">02 · Text</span><p>Brush baguette slices with garlic butter on a tray.</p></div>
+                  <div class="flow-tile image-tile" style="--step:3"><span class="flow-label">Image</span><img src="./assets/evaluation/holistic-02.webp" alt="Generated image of butter being brushed onto bread slices" width="420" height="420" loading="lazy"></div>
+                </div>
+              </div>
+              <figcaption class="sr-only">Assess the instructions and both generated images as one complete response.</figcaption>
+            </figure>
+          </article>
+
+          <article class="evaluation-method fine-method" aria-labelledby="fine-title">
+            <h3 id="fine-title">Fine-grained</h3>
+            <p class="method-description">Fix real context. Generate only the next image.</p>
+            <figure class="method-figure fine-figure">
+              <div class="fine-flow">
+                <div class="real-context">
+                  <div class="context-label"><svg width="12" height="15" viewBox="0 0 20 25" aria-hidden="true"><path d="M5 10V6a5 5 0 0 1 10 0v4M2 10h16v13H2Z"/></svg>Fixed real-world context</div>
+                  <div class="context-content">
+                    <div class="context-text"><span class="flow-label">Reference text</span><p>Slice the baguette evenly on a wooden board.</p></div>
+                    <div class="context-image"><img src="./assets/evaluation/reference-01.webp" alt="Ground-truth image of a baguette and bread slices" width="420" height="315" loading="lazy"></div>
+                    <div class="context-text context-next"><span class="flow-label">Reference text</span><p>Brush each cut surface evenly with garlic butter.</p></div>
+                  </div>
+                </div>
+                <div class="flow-arrow" aria-hidden="true"><span>UMM</span><svg viewBox="0 0 40 16"><path d="M1 8h36m-7-6 7 6-7 6"/></svg></div>
+                <div class="next-image"><span class="flow-label">Generated image</span><img src="./assets/evaluation/fine-02.webp" alt="Next image generated from the fixed real-world context" width="420" height="420" loading="lazy"></div>
+              </div>
+              <figcaption class="sr-only">Assess how faithfully the new image follows the fixed text and visual context.</figcaption>
+            </figure>
+          </article>
+        </div>
+
+        <div class="evaluation-metrics">
+          <h3>Seven metrics</h3>
+          <table class="metrics-table">
+            <caption class="sr-only">Seven evaluation metrics and their expert models or evaluators, grouped by setting.</caption>
+            <thead><tr><th scope="col">Metric</th><th scope="col">Expert model / evaluator</th></tr></thead>
+            <tbody>
+              <tr class="metric-setting"><th colspan="2" scope="rowgroup">Holistic</th></tr>
+              <tr><th scope="row">Text Richness</th><td>LLM · Gemma4</td></tr>
+              <tr><th scope="row">Text Logicality</th><td>LLM · Gemma4</td></tr>
+              <tr><th scope="row">Image Aesthetic</th><td>IQA · RALI</td></tr>
+              <tr><th scope="row">Image Diversity</th><td>DINOv3</td></tr>
+              <tr><th scope="row">Quantity Compliance</th><td>Exact image count</td></tr>
+            </tbody>
+            <tbody>
+              <tr class="metric-setting"><th colspan="2" scope="rowgroup">Fine-grained</th></tr>
+              <tr><th scope="row">Context Fidelity</th><td>VLM · Gemma4</td></tr>
+              <tr><th scope="row">Subject Consistency<sup>†</sup></th><td>DINOv3</td></tr>
+            </tbody>
+          </table>
+          <p class="metric-footnote"><sup>†</sup> Subject Consistency is evaluated on Tutorial and Story.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="experiments-section" id="experimental-results" aria-labelledby="experiments-title">
+    <div class="experiments-inner">
+      <header class="dataset-heading experiments-heading">
+        <h2 id="experiments-title"><em>IntReal</em> Experimental Results</h2>
+        <p>Model strengths, the open–closed gap, and the effects of SFT and RL.</p>
+      </header>
+
+      <div class="experiments-layout" id="experiments-explorer" aria-busy="true" data-finding="overview">
+        <figure class="radar-figure">
+          <svg class="results-radar" id="results-radar" viewBox="-20 0 760 540" role="img" aria-labelledby="radar-title radar-description">
+            <title id="radar-title">Seven-dimensional model capability profiles</title>
+            <desc id="radar-description">All eight evaluated models stay visible. Findings highlight individual models, the best open-source score on each metric, or the Base, SFT and RL training stages.</desc>
+          </svg>
+          <div class="radar-legend" id="radar-legend" aria-label="Model legend"></div>
+          <div class="radar-envelope-key" id="radar-envelope-key" aria-hidden="true"><span></span>Best OSS per metric</div>
+        </figure>
+
+        <div class="findings-stack" aria-label="Experimental findings">
+          <article class="finding-card" data-finding="strengths">
+            <h3><button type="button" class="finding-trigger" id="finding-strengths-trigger" aria-expanded="false" aria-controls="finding-strengths-panel"><span class="finding-number">01</span><span>Different models, different strengths.</span><span class="finding-toggle" aria-hidden="true">+</span></button></h3>
+            <div class="finding-panel" id="finding-strengths-panel" role="region" aria-labelledby="finding-strengths-trigger" aria-hidden="true" inert>
+              <div class="finding-panel-inner"><div class="finding-copy">
+                <p>No single model leads on every metric. Their profiles reveal complementary strengths in text, images, and cross-modal consistency.</p>
+                <div class="model-strength" id="model-strength"><p class="strength-model" id="strength-model">Emu3.5</p><p class="strength-metric" id="strength-metric">Best OSS Text Logicality</p><p class="strength-score" id="strength-score">75.17</p></div>
+              </div></div>
+            </div>
+          </article>
+
+          <article class="finding-card" data-finding="gap">
+            <h3><button type="button" class="finding-trigger" id="finding-gap-trigger" aria-expanded="false" aria-controls="finding-gap-panel"><span class="finding-number">02</span><span>The largest gap remains in text.</span><span class="finding-toggle" aria-hidden="true">+</span></button></h3>
+            <div class="finding-panel" id="finding-gap-panel" role="region" aria-labelledby="finding-gap-trigger" aria-hidden="true" inert>
+              <div class="finding-panel-inner"><div class="finding-copy">
+                <p>NanoBanana2 leads strongly on text, even against the best open-source score for each metric.</p>
+                <table class="finding-table gap-table"><thead><tr><th scope="col">Metric</th><th scope="col">Best OSS</th><th scope="col">NanoBanana2</th></tr></thead><tbody id="gap-comparison"></tbody></table>
+                <p class="finding-note">Best OSS is a per-metric envelope across evaluated checkpoints, not a single model.</p>
+              </div></div>
+            </div>
+          </article>
+
+          <article class="finding-card" data-finding="training">
+            <h3><button type="button" class="finding-trigger" id="finding-training-trigger" aria-expanded="false" aria-controls="finding-training-panel"><span class="finding-number">03</span><span>SFT brings a trade-off that RL mitigates.</span><span class="finding-toggle" aria-hidden="true">+</span></button></h3>
+            <div class="finding-panel" id="finding-training-panel" role="region" aria-labelledby="finding-training-trigger" aria-hidden="true" inert>
+              <div class="finding-panel-inner"><div class="finding-copy">
+                <p>SFT improves text at a visual cost. Image-generation RL partially recovers visual quality and reaches the best mean among evaluated OSS models.</p>
+                <p class="training-family">U1-8B-MoT</p>
+                <table class="finding-table training-table"><thead><tr><th scope="col">Metric</th><th scope="col" data-stage="0">Base</th><th scope="col" data-stage="1">+ SFT</th><th scope="col" data-stage="2">+ SFT + RL</th></tr></thead><tbody id="training-comparison"></tbody></table>
+              </div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <p class="experiments-error" id="experiments-error" role="status" hidden>Results could not be loaded. Please refresh to try again.</p>
+    </div>
+  </section>
+  <section class="reliability-section" id="metric-reliability" aria-labelledby="reliability-title">
+    <div class="reliability-inner">
+      <header class="dataset-heading">
+        <h2 id="reliability-title"><em>IntReal</em> Metric Reliability</h2>
+        <p>Complementary dimensions, human agreement, and consistent evaluator rankings.</p>
+      </header>
+
+      <div class="reliability-grid">
+        <article class="reliability-card">
+          <div class="reliability-card-heading"><span class="reliability-number">01</span><h3>Complementary metrics</h3></div>
+          <p class="reliability-stat"><span class="reliability-stat-prefix">max |ρ| =</span> 0.42</p>
+          <p class="reliability-scope">Seven evaluation dimensions</p>
+          <button type="button" class="reliability-figure" data-figure="complementary-metrics" aria-label="Enlarge metric correlation heatmap" aria-haspopup="dialog" aria-controls="reliability-dialog">
+            <img src="./assets/reliability/complementary-metrics.png" alt="Pairwise Spearman correlation heatmap for all seven metrics. The largest absolute off-diagonal correlation is 0.42, between Context Fidelity and Subject Consistency." width="1905" height="1466" loading="lazy" decoding="async">
+            <span class="figure-enlarge" aria-hidden="true">↗</span>
+          </button>
+          <p class="reliability-takeaway">Different metrics capture different strengths.</p>
+          <p class="reliability-detail">Limited redundancy in sample-level correlations, averaged over five models.</p>
+        </article>
+
+        <article class="reliability-card">
+          <div class="reliability-card-heading"><span class="reliability-number">02</span><h3>Human agreement</h3></div>
+          <p class="reliability-stat">83.3<span class="reliability-stat-unit">%</span></p>
+          <p class="reliability-scope">Average agreement with expert judgments</p>
+          <button type="button" class="reliability-figure" data-figure="human-agreement" aria-label="Enlarge human agreement chart" aria-haspopup="dialog" aria-controls="reliability-dialog">
+            <img src="./assets/reliability/human-agreement.png" alt="Automatic–human consistency for Text Richness, Text Logicality, Image Diversity, Context Fidelity, and Subject Consistency, with an average of 83.3 percent." width="1682" height="1381" loading="lazy" decoding="async">
+            <span class="figure-enlarge" aria-hidden="true">↗</span>
+          </button>
+          <p class="reliability-takeaway">Automatic scores align with human preferences.</p>
+          <p class="reliability-detail">750 expert pairwise comparisons across five subjective metrics: TR, TL, ID, CF, and SC.</p>
+        </article>
+
+        <article class="reliability-card">
+          <div class="reliability-card-heading"><span class="reliability-number">03</span><h3>Evaluator robustness</h3></div>
+          <p class="reliability-stat"><span class="reliability-stat-prefix">ρ</span> &gt; 0.90</p>
+          <p class="reliability-scope">Gemma4 vs. Qwen3.6-35B-A3B</p>
+          <button type="button" class="reliability-figure" data-figure="evaluator-robustness" aria-label="Enlarge evaluator robustness plots" aria-haspopup="dialog" aria-controls="reliability-dialog">
+            <img src="./assets/reliability/evaluator-robustness.png" alt="Model score comparisons across two evaluators: Spearman rho is 0.905 for Text Richness, 0.929 for Text Logicality, and 0.976 for Context Fidelity." width="2560" height="1343" loading="lazy" decoding="async">
+            <span class="figure-enlarge" aria-hidden="true">↗</span>
+          </button>
+          <p class="reliability-takeaway">Model rankings stay consistent across evaluators.</p>
+          <p class="reliability-detail">Eight model variants. Rank correlations: TR 0.905 · TL 0.929 · CF 0.976.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer class="project-footer" id="resources" aria-labelledby="footer-title">
+    <div class="footer-inner">
+      <div class="footer-intro">
+        <h2 id="footer-title">IntReal</h2>
+        <p>Explore, evaluate, and build with interleaved generation.</p>
+      </div>
+      <nav class="footer-resources" aria-label="IntReal resources">
+        <a href="" aria-disabled="true"><img src="./assets/icons/link.svg" alt="" width="20" height="20"><span>Paper</span></a>
+        <a href="https://huggingface.co/datasets/yushaohan/IntReal-100K" target="_blank" rel="noopener noreferrer"><img src="./assets/icons/huggingface.svg" alt="" width="20" height="20"><span>Dataset</span></a>
+        <a href="https://github.com/yushaohan/IntReal" target="_blank" rel="noopener noreferrer"><img src="./assets/icons/github.svg" alt="" width="20" height="20"><span>Evaluation Code</span></a>
+        <a href="https://huggingface.co/collections/yushaohan/intreal" target="_blank" rel="noopener noreferrer"><img src="./assets/icons/huggingface.svg" alt="" width="20" height="20"><span>Fine-tuned Models</span></a>
+      </nav>
+      <div class="footer-contact">
+        <p>Questions or ideas? Get in touch.</p>
+        <div class="footer-emails">
+          <a href="mailto:shaohan.yu@smail.nju.edu.cn">shaohan.yu@smail.nju.edu.cn</a>
+          <a href="mailto:chenyang.si@nju.edu.cn">chenyang.si@nju.edu.cn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="reliability-dialog" id="reliability-dialog" aria-labelledby="reliability-dialog-title">
+    <div class="reliability-dialog-header"><h2 id="reliability-dialog-title"></h2><button type="button" class="reliability-dialog-close" aria-label="Close figure">×</button></div>
+    <div class="reliability-dialog-image"><img id="reliability-dialog-image" alt=""></div>
+  </dialog>
+
+  <dialog class="sample-dialog" id="sample-dialog" aria-labelledby="sample-title">
+    <header class="sample-dialog-header">
+      <div class="sample-dialog-caption">
+        <p id="sample-meta"></p>
+        <h2 id="sample-title"></h2>
+      </div>
+      <div class="sample-dialog-controls">
+        <button type="button" class="gallery-control" id="sample-previous" aria-label="Previous sample">←</button>
+        <button type="button" class="gallery-control" id="sample-next" aria-label="Next sample">→</button>
+        <button type="button" class="gallery-control sample-close" id="sample-close" aria-label="Close sample">×</button>
+      </div>
+    </header>
+    <div class="sample-reader" id="sample-reader">
+      <div class="sample-page" id="sample-page">
+        <img class="sample-page-preview" id="sample-page-preview" alt="" width="420" height="594">
+        <img class="sample-page-full" id="sample-page-full" alt="" width="1240" height="1754">
+      </div>
+      <p class="sample-image-error" id="sample-image-error" role="status" hidden>The full-resolution image could not be loaded. Please try again.</p>
+    </div>
+  </dialog>
+</body>
+</html>

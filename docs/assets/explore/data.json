@@ -1,0 +1,525 @@
+{
+  "categories": [
+    {
+      "key": "planning",
+      "label": "Planning",
+      "percent": 26.11,
+      "color": "#108B96",
+      "sources": [
+        "Wikivoyage",
+        "Wikitravel"
+      ]
+    },
+    {
+      "key": "knowledge",
+      "label": "Knowledge",
+      "percent": 21.138,
+      "color": "#2E7D77",
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "key": "tutorial",
+      "label": "Tutorial",
+      "percent": 34.771,
+      "color": "#008D86",
+      "sources": [
+        "Xiachufang"
+      ]
+    },
+    {
+      "key": "story",
+      "label": "Story",
+      "percent": 17.981,
+      "color": "#476575",
+      "sources": [
+        "Curious George",
+        "Rabbids Invasion",
+        "The Land Before Time"
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "id": "4512",
+      "category": "knowledge",
+      "title": "A jumping spider in close view",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/4512.webp",
+      "body": "assets/explore/body/4512.webp"
+    },
+    {
+      "id": "3012",
+      "category": "planning",
+      "title": "Xi'an in golden light",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/3012.webp",
+      "body": "assets/explore/body/3012.webp"
+    },
+    {
+      "id": "60279",
+      "category": "tutorial",
+      "title": "Walnut and dried-fruit loaf",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/60279.webp",
+      "body": "assets/explore/body/60279.webp"
+    },
+    {
+      "id": "58020",
+      "category": "story",
+      "title": "Through the rocky canyon",
+      "source": "The Land Before Time",
+      "cover": "assets/explore/cover/58020.webp",
+      "body": "assets/explore/body/58020.webp"
+    },
+    {
+      "id": "9507",
+      "category": "knowledge",
+      "title": "A sunbird in metallic green",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/9507.webp",
+      "body": "assets/explore/body/9507.webp"
+    },
+    {
+      "id": "3544",
+      "category": "planning",
+      "title": "Autumn beside Lake Superior",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/3544.webp",
+      "body": "assets/explore/body/3544.webp"
+    },
+    {
+      "id": "69292",
+      "category": "tutorial",
+      "title": "Chilled chicken with chili-sesame sauce",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/69292.webp",
+      "body": "assets/explore/body/69292.webp"
+    },
+    {
+      "id": "61780",
+      "category": "story",
+      "title": "A meeting in the snow",
+      "source": "The Land Before Time",
+      "cover": "assets/explore/cover/61780.webp",
+      "body": "assets/explore/body/61780.webp"
+    },
+    {
+      "id": "14944",
+      "category": "knowledge",
+      "title": "A space station above Earth",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/14944.webp",
+      "body": "assets/explore/body/14944.webp"
+    },
+    {
+      "id": "6596",
+      "category": "planning",
+      "title": "Sea cliffs and the arch at Percé",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/6596.webp",
+      "body": "assets/explore/body/6596.webp"
+    },
+    {
+      "id": "69747",
+      "category": "tutorial",
+      "title": "Rib steak with garlic and roasted vegetables",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/69747.webp",
+      "body": "assets/explore/body/69747.webp"
+    },
+    {
+      "id": "80586",
+      "category": "story",
+      "title": "A dinosaur and a red crab",
+      "source": "The Land Before Time",
+      "cover": "assets/explore/cover/80586.webp",
+      "body": "assets/explore/body/80586.webp"
+    },
+    {
+      "id": "20402",
+      "category": "knowledge",
+      "title": "A stream through the green woodland",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/20402.webp",
+      "body": "assets/explore/body/20402.webp"
+    },
+    {
+      "id": "13590",
+      "category": "planning",
+      "title": "Faces in the sandstone forest",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/13590.webp",
+      "body": "assets/explore/body/13590.webp"
+    },
+    {
+      "id": "70900",
+      "category": "tutorial",
+      "title": "Chicken soup with corn, carrots and red dates",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/70900.webp",
+      "body": "assets/explore/body/70900.webp"
+    },
+    {
+      "id": "1441",
+      "category": "story",
+      "title": "Setting out in a red boat",
+      "source": "Curious George",
+      "cover": "assets/explore/cover/1441.webp",
+      "body": "assets/explore/body/1441.webp"
+    },
+    {
+      "id": "29520",
+      "category": "knowledge",
+      "title": "The form of a pink orchid",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/29520.webp",
+      "body": "assets/explore/body/29520.webp"
+    },
+    {
+      "id": "18867",
+      "category": "planning",
+      "title": "Huesca and the cliffside monastery",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/18867.webp",
+      "body": "assets/explore/body/18867.webp"
+    },
+    {
+      "id": "86308",
+      "category": "tutorial",
+      "title": "Shrimp and squid fried rice",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/86308.webp",
+      "body": "assets/explore/body/86308.webp"
+    },
+    {
+      "id": "5649",
+      "category": "story",
+      "title": "Dragon parade through the city",
+      "source": "Curious George",
+      "cover": "assets/explore/cover/5649.webp",
+      "body": "assets/explore/body/5649.webp"
+    },
+    {
+      "id": "38339",
+      "category": "knowledge",
+      "title": "Malachite wings at rest",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/38339.webp",
+      "body": "assets/explore/body/38339.webp"
+    },
+    {
+      "id": "22558",
+      "category": "planning",
+      "title": "Lisbon above the mist",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/22558.webp",
+      "body": "assets/explore/body/22558.webp"
+    },
+    {
+      "id": "89485",
+      "category": "tutorial",
+      "title": "Iced lemon black tea",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/89485.webp",
+      "body": "assets/explore/body/89485.webp"
+    },
+    {
+      "id": "15850",
+      "category": "story",
+      "title": "An elephant in George's imagination",
+      "source": "Curious George",
+      "cover": "assets/explore/cover/15850.webp",
+      "body": "assets/explore/body/15850.webp"
+    },
+    {
+      "id": "40510",
+      "category": "knowledge",
+      "title": "Ladybird on white blossoms",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/40510.webp",
+      "body": "assets/explore/body/40510.webp"
+    },
+    {
+      "id": "36052",
+      "category": "planning",
+      "title": "Summer color in the French Alps",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/36052.webp",
+      "body": "assets/explore/body/36052.webp"
+    },
+    {
+      "id": "96530",
+      "category": "tutorial",
+      "title": "Blue character cake decoration",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/96530.webp",
+      "body": "assets/explore/body/96530.webp"
+    },
+    {
+      "id": "37424",
+      "category": "story",
+      "title": "George at the tree-shaped library",
+      "source": "Curious George",
+      "cover": "assets/explore/cover/37424.webp",
+      "body": "assets/explore/body/37424.webp"
+    },
+    {
+      "id": "40844",
+      "category": "knowledge",
+      "title": "Red wheels of a steam locomotive",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/40844.webp",
+      "body": "assets/explore/body/40844.webp"
+    },
+    {
+      "id": "57821",
+      "category": "planning",
+      "title": "Belgrade: arches and evening light",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/57821.webp",
+      "body": "assets/explore/body/57821.webp"
+    },
+    {
+      "id": "1199",
+      "category": "tutorial",
+      "title": "Egg-and-cheese stuffed kabocha",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/1199.webp",
+      "body": "assets/explore/body/1199.webp"
+    },
+    {
+      "id": "92580",
+      "category": "story",
+      "title": "At the country fair",
+      "source": "Curious George",
+      "cover": "assets/explore/cover/92580.webp",
+      "body": "assets/explore/body/92580.webp"
+    },
+    {
+      "id": "41771",
+      "category": "knowledge",
+      "title": "Three towers, three facades",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/41771.webp",
+      "body": "assets/explore/body/41771.webp"
+    },
+    {
+      "id": "59375",
+      "category": "planning",
+      "title": "Cuenca above the gorge",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/59375.webp",
+      "body": "assets/explore/body/59375.webp"
+    },
+    {
+      "id": "7063",
+      "category": "tutorial",
+      "title": "Chicken, fig and orange pasta salad",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/7063.webp",
+      "body": "assets/explore/body/7063.webp"
+    },
+    {
+      "id": "5965",
+      "category": "story",
+      "title": "The traveling armchair",
+      "source": "Rabbids Invasion",
+      "cover": "assets/explore/cover/5965.webp",
+      "body": "assets/explore/body/5965.webp"
+    },
+    {
+      "id": "42404",
+      "category": "knowledge",
+      "title": "Desert trees beneath the dunes",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/42404.webp",
+      "body": "assets/explore/body/42404.webp"
+    },
+    {
+      "id": "76932",
+      "category": "planning",
+      "title": "A window onto the Coromandel coast",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/76932.webp",
+      "body": "assets/explore/body/76932.webp"
+    },
+    {
+      "id": "24439",
+      "category": "tutorial",
+      "title": "Cheese-topped hasselback potatoes",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/24439.webp",
+      "body": "assets/explore/body/24439.webp"
+    },
+    {
+      "id": "6176",
+      "category": "story",
+      "title": "Rabbids on the ice",
+      "source": "Rabbids Invasion",
+      "cover": "assets/explore/cover/6176.webp",
+      "body": "assets/explore/body/6176.webp"
+    },
+    {
+      "id": "49448",
+      "category": "knowledge",
+      "title": "Flowers, glass and quiet rooms",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/49448.webp",
+      "body": "assets/explore/body/49448.webp"
+    },
+    {
+      "id": "90436",
+      "category": "planning",
+      "title": "A playful facade in Brunswick",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/90436.webp",
+      "body": "assets/explore/body/90436.webp"
+    },
+    {
+      "id": "32103",
+      "category": "tutorial",
+      "title": "Meat-floss mochi fingers with sesame",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/32103.webp",
+      "body": "assets/explore/body/32103.webp"
+    },
+    {
+      "id": "22481",
+      "category": "story",
+      "title": "A bouquet in the clearing",
+      "source": "Rabbids Invasion",
+      "cover": "assets/explore/cover/22481.webp",
+      "body": "assets/explore/body/22481.webp"
+    },
+    {
+      "id": "55226",
+      "category": "knowledge",
+      "title": "Embroidery and traditional dress",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/55226.webp",
+      "body": "assets/explore/body/55226.webp"
+    },
+    {
+      "id": "28569",
+      "category": "planning",
+      "title": "Wernigerode in winter light",
+      "source": "Wikitravel",
+      "cover": "assets/explore/cover/28569.webp",
+      "body": "assets/explore/body/28569.webp"
+    },
+    {
+      "id": "32665",
+      "category": "tutorial",
+      "title": "Bok choy and shiitake stir-fry",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/32665.webp",
+      "body": "assets/explore/body/32665.webp"
+    },
+    {
+      "id": "47181",
+      "category": "story",
+      "title": "Records by the sea",
+      "source": "Rabbids Invasion",
+      "cover": "assets/explore/cover/47181.webp",
+      "body": "assets/explore/body/47181.webp"
+    },
+    {
+      "id": "59325",
+      "category": "knowledge",
+      "title": "Micrographia: drawing the unseen",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/59325.webp",
+      "body": "assets/explore/body/59325.webp"
+    },
+    {
+      "id": "71902",
+      "category": "planning",
+      "title": "Blue lanes of Chefchaouen",
+      "source": "Wikitravel",
+      "cover": "assets/explore/cover/71902.webp",
+      "body": "assets/explore/body/71902.webp"
+    },
+    {
+      "id": "32696",
+      "category": "tutorial",
+      "title": "Cheese and sausage pancake-base pizza",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/32696.webp",
+      "body": "assets/explore/body/32696.webp"
+    },
+    {
+      "id": "55805",
+      "category": "story",
+      "title": "An apple in the lab",
+      "source": "Rabbids Invasion",
+      "cover": "assets/explore/cover/55805.webp",
+      "body": "assets/explore/body/55805.webp"
+    },
+    {
+      "id": "74287",
+      "category": "knowledge",
+      "title": "Folding phones and physical keys",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/74287.webp",
+      "body": "assets/explore/body/74287.webp"
+    },
+    {
+      "id": "98739",
+      "category": "planning",
+      "title": "South Lombok between hills and sea",
+      "source": "Wikitravel",
+      "cover": "assets/explore/cover/98739.webp",
+      "body": "assets/explore/body/98739.webp"
+    },
+    {
+      "id": "47900",
+      "category": "tutorial",
+      "title": "Golden-bottomed pan-fried vegetable buns",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/47900.webp",
+      "body": "assets/explore/body/47900.webp"
+    },
+    {
+      "id": "4912",
+      "category": "story",
+      "title": "Friends on the green hillside",
+      "source": "The Land Before Time",
+      "cover": "assets/explore/cover/4912.webp",
+      "body": "assets/explore/body/4912.webp"
+    },
+    {
+      "id": "98895",
+      "category": "knowledge",
+      "title": "Geometry in the gardens of Córdoba",
+      "source": "Wikipedia",
+      "cover": "assets/explore/cover/98895.webp",
+      "body": "assets/explore/body/98895.webp"
+    },
+    {
+      "id": "1913",
+      "category": "planning",
+      "title": "Kütahya in blue ceramic",
+      "source": "Wikivoyage",
+      "cover": "assets/explore/cover/1913.webp",
+      "body": "assets/explore/body/1913.webp"
+    },
+    {
+      "id": "59478",
+      "category": "tutorial",
+      "title": "Black sesame wafers and yogurt cones",
+      "source": "Xiachufang",
+      "cover": "assets/explore/cover/59478.webp",
+      "body": "assets/explore/body/59478.webp"
+    },
+    {
+      "id": "15949",
+      "category": "story",
+      "title": "Together in the night forest",
+      "source": "The Land Before Time",
+      "cover": "assets/explore/cover/15949.webp",
+      "body": "assets/explore/body/15949.webp"
+    }
+  ]
+}

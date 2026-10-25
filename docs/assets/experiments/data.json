@@ -1,0 +1,394 @@
+{
+  "metrics": [
+    {
+      "key": "TR",
+      "label": "Text Richness",
+      "setting": "Holistic",
+      "sourceKey": "text_richness"
+    },
+    {
+      "key": "TL",
+      "label": "Text Logicality",
+      "setting": "Holistic",
+      "sourceKey": "text_logicality"
+    },
+    {
+      "key": "IA",
+      "label": "Image Aesthetic",
+      "setting": "Holistic",
+      "sourceKey": "image_aesthetic"
+    },
+    {
+      "key": "ID",
+      "label": "Image Diversity",
+      "setting": "Holistic",
+      "sourceKey": "image_diversity"
+    },
+    {
+      "key": "QC",
+      "label": "Quantity Compliance",
+      "setting": "Holistic",
+      "sourceKey": "quantity_compliance"
+    },
+    {
+      "key": "CF",
+      "label": "Context Fidelity",
+      "setting": "Fine-grained",
+      "sourceKey": "context_fidelity"
+    },
+    {
+      "key": "SC",
+      "label": "Subject Consistency",
+      "setting": "Fine-grained",
+      "sourceKey": "subject_consistency"
+    }
+  ],
+  "normalization": {
+    "method": "Per-metric min–max over all eight models",
+    "range": [
+      30,
+      90
+    ],
+    "tiedValue": 60,
+    "fixedAcrossAnimation": true,
+    "formula": "30 + 60 * (value - metricMin) / (metricMax - metricMin)",
+    "minima": [
+      14.020270270270272,
+      62.5,
+      75.09677631656328,
+      75.51044541167782,
+      39.69594594594595,
+      65.60285714285715,
+      60.614586263195804
+    ],
+    "maxima": [
+      90.80267558528428,
+      97.49163879598662,
+      82.31993484058508,
+      93.30972703297932,
+      95.33333333333334,
+      87.2917438271605,
+      67.65437409782564
+    ]
+  },
+  "geometry": {
+    "outerRadiusValue": 100,
+    "startAngle": 0,
+    "direction": "counterclockwise",
+    "radialTickLabels": false,
+    "radialGrid": false,
+    "outerCircle": true
+  },
+  "models": [
+    {
+      "id": "bagel-sft",
+      "label": "Bagel+SFT",
+      "color": "#F0A493",
+      "dash": [
+        6,
+        3
+      ],
+      "lineWidth": 2.8,
+      "rawScores": [
+        17.5,
+        63.5,
+        76.81664071480434,
+        91.35325747066074,
+        62.83333333333333,
+        74.1919532627866,
+        60.614586263195804
+      ],
+      "normalizedScores": [
+        32.719161804416125,
+        31.71469534050179,
+        44.286252136275564,
+        83.40489261102371,
+        54.95162530866695,
+        53.760821599419955,
+        30.0
+      ],
+      "family": "Bagel",
+      "stage": "SFT",
+      "access": "open-source",
+      "mean": 63.83
+    },
+    {
+      "id": "bagel-sft-rl",
+      "label": "Bagel+SFT+RL",
+      "color": "#D9583C",
+      "dash": [
+        1,
+        2
+      ],
+      "lineWidth": 2.8,
+      "rawScores": [
+        16.666666666666664,
+        62.5,
+        81.9381996889909,
+        90.31399856673346,
+        62.5,
+        76.0392223324515,
+        65.43010998876369
+      ],
+      "normalizedScores": [
+        32.0679709515786,
+        30.0,
+        86.82907290218276,
+        79.90163132428663,
+        54.592154799012256,
+        58.871095159939244,
+        71.04263229536174
+      ],
+      "family": "Bagel",
+      "stage": "SFT+RL",
+      "access": "open-source",
+      "mean": 65.06
+    },
+    {
+      "id": "emu35",
+      "label": "Emu3.5",
+      "color": "#E7C66D",
+      "dash": [],
+      "lineWidth": 2.8,
+      "rawScores": [
+        14.020270270270272,
+        75.16891891891892,
+        81.19505328705182,
+        75.51044541167782,
+        39.69594594594595,
+        65.60285714285715,
+        61.45772189405576
+      ],
+      "normalizedScores": [
+        30.0,
+        51.723336239465276,
+        80.65604153812535,
+        30.0,
+        30.0,
+        30.0,
+        37.18603160208127
+      ],
+      "family": "Emu3.5",
+      "stage": "Base",
+      "access": "open-source",
+      "mean": 58.95
+    },
+    {
+      "id": "u1-a3b",
+      "label": "U1-A3B-MoT",
+      "color": "#3F6FA3",
+      "dash": [],
+      "lineWidth": 2.8,
+      "rawScores": [
+        24.666666666666668,
+        69.16666666666667,
+        80.6962565779686,
+        88.69574148125118,
+        72.5,
+        86.80819830246912,
+        63.45245460680633
+      ],
+      "normalizedScores": [
+        38.319403138818785,
+        41.431302270011955,
+        76.51272910140345,
+        74.44661200413964,
+        65.3762700886532,
+        88.66232269531474,
+        54.18710685839649
+      ],
+      "family": "SenseNova-U1-A3B-MoT",
+      "stage": "Base",
+      "access": "open-source",
+      "mean": 69.43
+    },
+    {
+      "id": "u1-8b-base",
+      "label": "U1-8B-MoT",
+      "color": "#9ABDBB",
+      "dash": [],
+      "lineWidth": 2.8,
+      "rawScores": [
+        21.833333333333332,
+        67.33333333333333,
+        79.6047407190005,
+        88.36410558223724,
+        95.33333333333334,
+        87.2917438271605,
+        63.38487630707148
+      ],
+      "normalizedScores": [
+        36.10535423917122,
+        38.28769414575866,
+        67.44592663261022,
+        73.32869306987081,
+        90.0,
+        90.0,
+        53.61113808215792
+      ],
+      "family": "SenseNova-U1-8B-MoT",
+      "stage": "Base",
+      "access": "open-source",
+      "mean": 71.88
+    },
+    {
+      "id": "u1-8b-sft",
+      "label": "U1-8B-MoT+SFT",
+      "color": "#5E9290",
+      "dash": [
+        6,
+        3
+      ],
+      "lineWidth": 2.8,
+      "rawScores": [
+        28.166666666666668,
+        71.83333333333334,
+        75.09677631656328,
+        87.048032535447,
+        93.5,
+        83.0194389329806,
+        67.52260095180263
+      ],
+      "normalizedScores": [
+        41.054404720736365,
+        46.003823178016745,
+        30.0,
+        68.89231274354839,
+        88.02291219689914,
+        78.18112255451496,
+        88.8768995675569
+      ],
+      "family": "SenseNova-U1-8B-MoT",
+      "stage": "SFT",
+      "access": "open-source",
+      "mean": 72.31
+    },
+    {
+      "id": "u1-8b-sft-rl",
+      "label": "U1-8B-MoT+SFT+RL",
+      "color": "#1F625F",
+      "dash": [
+        1,
+        2
+      ],
+      "lineWidth": 2.8,
+      "rawScores": [
+        27.833333333333332,
+        70.5,
+        78.52712588508925,
+        93.30972703297932,
+        93.83333333333333,
+        85.57441578483245,
+        67.10955785672776
+      ],
+      "normalizedScores": [
+        40.793928379601354,
+        43.71756272401434,
+        58.49459463295271,
+        90.0,
+        88.38238270655384,
+        85.24919448197151,
+        85.35653982282386
+      ],
+      "family": "SenseNova-U1-8B-MoT",
+      "stage": "SFT+RL",
+      "access": "open-source",
+      "mean": 73.81
+    },
+    {
+      "id": "nanobanana2",
+      "label": "NanoBanana2",
+      "color": "#888888",
+      "dash": [],
+      "lineWidth": 2.8,
+      "rawScores": [
+        90.80267558528428,
+        97.49163879598662,
+        82.31993484058508,
+        83.55798515321952,
+        95.31772575250837,
+        76.70269670949018,
+        67.65437409782564
+      ],
+      "normalizedScores": [
+        90.0,
+        90.0,
+        90.0,
+        57.127633281257964,
+        89.9831686048991,
+        60.70652651249138,
+        90.0
+      ],
+      "family": "Gemini3.1-Flash-Image",
+      "stage": "API",
+      "access": "closed-source",
+      "mean": 84.84
+    }
+  ],
+  "bestOSS": {
+    "id": "best-oss-per-metric",
+    "label": "Best OSS (per metric)",
+    "synthetic": true,
+    "description": "A per-metric upper envelope of the seven evaluated open-source models; not a single checkpoint.",
+    "rawScores": [
+      28.166666666666668,
+      75.16891891891892,
+      81.9381996889909,
+      93.30972703297932,
+      95.33333333333334,
+      87.2917438271605,
+      67.52260095180263
+    ],
+    "normalizedScores": [
+      41.054404720736365,
+      51.723336239465276,
+      86.82907290218276,
+      90.0,
+      90.0,
+      90.0,
+      88.8768995675569
+    ],
+    "winnerIds": [
+      [
+        "u1-8b-sft"
+      ],
+      [
+        "emu35"
+      ],
+      [
+        "bagel-sft-rl"
+      ],
+      [
+        "u1-8b-sft-rl"
+      ],
+      [
+        "u1-8b-base"
+      ],
+      [
+        "u1-8b-base"
+      ],
+      [
+        "u1-8b-sft"
+      ]
+    ],
+    "access": "open-source",
+    "stage": "Per-metric envelope",
+    "mean": null
+  },
+  "stageIds": [
+    "u1-8b-base",
+    "u1-8b-sft",
+    "u1-8b-sft-rl"
+  ],
+  "scoreRange": [
+    0,
+    100
+  ],
+  "higherIsBetter": true,
+  "evaluator": "Gemma4",
+  "meanNote": "Published means are preserved; model raw scores retain full plotting precision.",
+  "sources": [
+    "video public/official-radar.json",
+    "video public/results-models.json"
+  ]
+}
