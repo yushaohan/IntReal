@@ -11,12 +11,12 @@
 [Chenyang Si](http://chenyangsi.top/)<sup>1,†</sup>
 
 <sup>1</sup> [PRLab, Nanjing University](https://prlab-nju.com/nju/) &nbsp;
-<sup>2</sup> [Meituan LongCat](https://longcat.ai/)
+<sup>2</sup> [Meituan](https://longcat.ai/)
 <br>
 <sup>3</sup> [Imperial College London](https://www.imperial.ac.uk/) &nbsp;
 <sup>4</sup> [S-Lab, Nanyang Technological University](https://www.ntu.edu.sg/s-lab)
 
-📄 Paper (Coming Soon) · 🌐 Project Page (Coming Soon) · 🤗 Models & Dataset (Coming Soon)
+📄 Paper (Coming Soon) · 🌐 [Project Page](https://yushaohan.github.io/IntReal/) · 🤗 [Models & Dataset](https://huggingface.co/collections/yushaohan/intreal)
 
 </div>
 
@@ -53,8 +53,20 @@ python evaluate.py --model test --benchmark test
 
 If the environment is configured correctly, the evaluation results are saved to `results/test/test.jsonl`.
 
+## 🦁 Model Zoo
+
+Our released models are available in the [IntReal Hugging Face collection](https://huggingface.co/collections/yushaohan/intreal).
+
+| Model family | SFT | SFT + RL |
+| --- | --- | --- |
+| Bagel | [IntReal-Bagel-SFT](https://huggingface.co/yushaohan/IntReal-Bagel-SFT) | [IntReal-Bagel-SFT-RL](https://huggingface.co/yushaohan/IntReal-Bagel-SFT-RL) |
+| SenseNova-U1-8B-MoT | [IntReal-U1-8B-MoT-SFT](https://huggingface.co/yushaohan/IntReal-U1-8B-MoT-SFT) | [IntReal-U1-8B-MoT-SFT-RL](https://huggingface.co/yushaohan/IntReal-U1-8B-MoT-SFT-RL) |
+
 ## 🤖 Inference
-Coming Soon
+
+We provide inference scripts for **Bagel** and **SenseNova-U1**, covering both self-forcing (SF) interleaved generation and teacher-forcing (TF) image generation conditioned on ground-truth context.
+
+See [inference/README.md](inference/README.md) for backend installation, checkpoint preparation, generation commands, multi-GPU execution, and resuming interrupted runs. The scripts save outputs in the format expected by the evaluation pipeline below.
 
 ## 🔍 Evaluation
 
@@ -104,7 +116,7 @@ Optional arguments:
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--concurrency` | `20` | Maximum number of samples evaluated concurrently. Lower this to reduce API and local-model load. |
+| `--concurrency` | `20` | Maximum number of samples evaluated concurrently. |
 | `--config-dir` | `config` | Directory containing `experts.yaml`, `metrics.yaml`, and `prompts.yaml`. |
 | `--output-dir` | `outputs` | Root directory of model outputs; the runner reads `<output-dir>/<model>/<benchmark>.jsonl`. |
 | `--result-dir` | `results` | Root directory for evaluation results. |
@@ -123,8 +135,17 @@ python -m viewer.app
 
 Open `http://127.0.0.1:8420`. The viewer reads `benchmark/`, `outputs/`, and `results/` without loading models or calling APIs.
 
-## ©️ Acknowledgement & Licence
-Coming Soon
+## 🙏 Acknowledgement
+
+We thank the teams behind Bagel, Emu3.5, and SenseNova-U1 for their contributions to open-source unified multimodal models (UMMs). We also thank the Flow-Factory team for providing the reinforcement learning training framework.
+
+## ©️ Licence
+
+- **Code:** Released under the [Apache License 2.0](LICENSE). Third-party components remain subject to their respective licences.
+- **Dataset:** Please refer to the licence and usage terms in the [IntReal-100K dataset card](https://huggingface.co/datasets/yushaohan/IntReal-100K) on Hugging Face.
+- **Models:** Please refer to the licence and usage terms in each model card in our [Hugging Face collection](https://huggingface.co/collections/yushaohan/intreal).
+
+If you plan to use IntReal for commercial purposes, please let me know at [shaohan.yu@smail.nju.edu.cn](mailto:shaohan.yu@smail.nju.edu.cn).
 
 ## 📧 Contact
 
