@@ -1,8 +1,8 @@
 # Benchmark
 
-The evaluation records are included in `benchmark/IntReal.jsonl`. The images will be available in the Hugging Face dataset [yushaohan/IntReal-100K](https://huggingface.co/datasets/yushaohan/IntReal-100K) (not uploaded yet).
+The evaluation records are included in `benchmark/IntReal.jsonl`. The images are available in the Hugging Face dataset [yushaohan/IntReal-100K](https://huggingface.co/datasets/yushaohan/IntReal-100K).
 
-Once the dataset is available, download and extract the evaluation images from the repository root:
+Download and extract the evaluation images from the repository root:
 
 ```bash
 hf download yushaohan/IntReal-100K archives/eval.tar --repo-type dataset --local-dir .
