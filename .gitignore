@@ -37,3 +37,8 @@ __pycache__/
 
 # Local inference backend (clone separately)
 /inference/Bagel/
+
+/inference/SenseNova-U1/
+
+# Local U1.5 no-thinking inference adapter
+/inference/sensenova_u1p5.py

@@ -4,7 +4,6 @@
 
 import argparse
 import contextlib
-import hashlib
 import json
 import logging
 import multiprocessing as mp
@@ -51,9 +50,9 @@ def clean_text(text):
 
 
 @contextlib.contextmanager
-def sample_seed(seed, sample_id, phase):
-    """Isolate RNG state and make SF/TF seeds independent of resume order."""
-    value = int.from_bytes(hashlib.sha256(f'{seed}:{sample_id}:{phase}'.encode()).digest()[:4], 'big')
+def sample_seed(seed):
+    """Use the same seed for every sample and phase."""
+    value = int(seed)
     python_state, numpy_state = random.getstate(), np.random.get_state()
     try:
         with torch.random.fork_rng(devices=list(range(torch.cuda.device_count()))):
@@ -155,12 +154,14 @@ class IntRealGenerator:
                 cfg_text, cfg_img = deepcopy(gen), deepcopy(gen)
 
     @torch.no_grad()
-    def generate_tf(self, sample, **image_kwargs):
+    def generate_tf(self, sample, max_images=10, **image_kwargs):
         """Generate every reference image position from GT prefixes, without reasoning or SF feedback."""
         with torch.autocast('cuda', dtype=torch.bfloat16):
             gen, cfg_text, cfg_img = self._prefix(sample)
             images = []
             for block in sample['golden_result']:
+                if len(images) >= max_images:
+                    break
                 if block['type'] == 'text':
                     gen = self.inf.update_context_text(block['content'], gen)
                     cfg_img = self.inf.update_context_text(block['content'], cfg_img)
@@ -174,15 +175,14 @@ class IntRealGenerator:
             return images
 
 
-def load_generator(model_path, checkpoint=None, gpu_memory_gib=60, bagel_repo=None):
-    """Load one model, balancing decoder layers across visible GPUs without touching upstream files."""
+def load_generator(model_path, checkpoint=None, bagel_repo=None):
+    """Load one complete model on a single GPU."""
     repo = Path(bagel_repo).expanduser().resolve() if bagel_repo else Path(__file__).resolve().parent / 'Bagel'
     for relative in ('inferencer.py', 'modeling/bagel', 'data/data_utils.py'):
         if not (repo / relative).exists():
             raise FileNotFoundError(f'Missing BAGEL source: {repo / relative}; clone BAGEL into inference/Bagel or use --bagel-repo')
     sys.path.insert(0, str(repo))
-    from accelerate import init_empty_weights, infer_auto_device_map, load_checkpoint_and_dispatch
-    from accelerate.utils import get_balanced_memory
+    from accelerate import init_empty_weights, load_checkpoint_and_dispatch
     from accelerate.hooks import AlignDevicesHook, add_hook_to_module
     from data.data_utils import add_special_tokens
     from data.transforms import ImageTransform
@@ -210,27 +210,9 @@ def load_generator(model_path, checkpoint=None, gpu_memory_gib=60, bagel_repo=No
     weights = Path(checkpoint) if checkpoint else root / 'ema.safetensors'
     if not weights.exists():
         raise FileNotFoundError(weights)
-    no_split = ['Qwen2MoTDecoderLayer', 'SiglipVisionModel']
-    limits = {i: f'{gpu_memory_gib}GiB' for i in range(torch.cuda.device_count())}
-    balanced = get_balanced_memory(model, max_memory=limits, no_split_module_classes=no_split,
-                                   dtype=torch.bfloat16)
-    device_map = infer_auto_device_map(model, max_memory=balanced, no_split_module_classes=no_split,
-                                       dtype=torch.bfloat16)
-    if any(device in ('cpu', 'disk') for device in device_map.values()):
-        raise RuntimeError('Insufficient GPU memory; increase --gpu-memory-gib or visible GPU count')
-    # These modules exchange tensors outside module forward hooks.
-    tied = ('time_embedder', 'latent_pos_embed', 'vae2llm', 'llm2vae', 'connector', 'vit_pos_embed')
-    first = next(iter(device_map.values()))
-    if '' not in device_map:
-        for name in tied:
-            for key in list(device_map):
-                if key == name or key.startswith(name + '.'):
-                    del device_map[key]
-            device_map[name] = first
-    LOG.info('Model device map: %s', device_map)
-    model = load_checkpoint_and_dispatch(model, str(weights), device_map=device_map,
+    model = load_checkpoint_and_dispatch(model, str(weights), device_map={'': 0},
                                         dtype=torch.bfloat16, force_hooks=True).eval()
-    vae_device = f'cuda:{first}' if isinstance(first, int) else first
+    vae_device = 'cuda:0'
     vae = vae.to(device=vae_device, dtype=torch.float32).eval()
     for module in (vae.encoder, vae.decoder):
         add_hook_to_module(module, AlignDevicesHook(execution_device=vae_device))
@@ -314,7 +296,7 @@ def run_benchmark(generator, samples, output_path, *, model_name, eval_set, sett
         for phase in ('sf', 'tf'):
             key = 'response_' + phase
             existing = row[key]
-            expected = sum(b['type'] == 'image' for b in sample['golden_result'])
+            expected = min(settings['max_images'], sum(b['type'] == 'image' for b in sample['golden_result']))
             complete = bool(existing) and all(Path(b['content']).is_file() for b in existing if b['type'] == 'image')
             if phase == 'tf':
                 complete = complete and len(existing) == expected and all(b['type'] == 'image' for b in existing)
@@ -323,7 +305,7 @@ def run_benchmark(generator, samples, output_path, *, model_name, eval_set, sett
             try:
                 started = time.monotonic()
                 LOG.info('id=%s starting %s', sid, phase.upper())
-                with sample_seed(settings['seed'], sid, phase):
+                with sample_seed(settings['seed']):
                     if phase == 'sf':
                         blocks, reason = generator.generate_sf(sample, reasoning=settings['reasoning'],
                             max_text_tokens=settings['max_text_tokens'], max_images=settings['max_images'],
@@ -331,7 +313,7 @@ def run_benchmark(generator, samples, output_path, *, model_name, eval_set, sett
                         row['sf_finish_reason'] = reason
                         row['sf_raw_text'] = [b for b in blocks if isinstance(b, str)]
                     else:
-                        blocks = generator.generate_tf(sample, **image_kwargs)
+                        blocks = generator.generate_tf(sample, max_images=settings['max_images'], **image_kwargs)
                         if len(blocks) != expected:
                             raise ValueError(f'TF returned {len(blocks)} images; expected {expected}')
                 row[key] = save_blocks(blocks, image_dir, phase)
@@ -366,7 +348,7 @@ def inference_worker(device, tasks, results, args, output_path, settings):
     os.environ['CUDA_VISIBLE_DEVICES'] = device
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(processName)s %(levelname)s %(message)s')
     try:
-        generator = load_generator(args.model_path, args.checkpoint, args.gpu_memory_gib, args.bagel_repo)
+        generator = load_generator(args.model_path, args.checkpoint, args.bagel_repo)
         LOG.info('Worker ready on physical GPU %s', device)
         while True:
             task = tasks.get()
@@ -395,16 +377,17 @@ def run_parallel(args, samples, output_path, settings):
             blocks = row.get('response_' + phase, []) if row else []
             complete = complete and bool(blocks) and all(Path(b['content']).is_file() for b in blocks if b['type'] == 'image')
             if phase == 'tf':
-                complete = complete and len(blocks) == sum(b['type'] == 'image' for b in sample['golden_result']) and all(b['type'] == 'image' for b in blocks)
+                complete = complete and len(blocks) == min(settings['max_images'], sum(b['type'] == 'image' for b in sample['golden_result'])) and all(b['type'] == 'image' for b in blocks)
         if not complete:
             pending.append((sample, row))
     if not pending:
         LOG.info('All %s samples already complete', len(samples))
         return 0
     visible = os.environ.get('CUDA_VISIBLE_DEVICES')
-    devices = visible.split(',') if visible is not None else [str(i) for i in range(torch.cuda.device_count())]
-    if args.num_workers > len(devices) or any(not d.strip() for d in devices):
-        raise ValueError('--num-workers exceeds visible GPUs')
+    devices = [d.strip() for d in visible.split(',')] if visible is not None else [str(i) for i in range(torch.cuda.device_count())]
+    count = min(args.num_workers, len(pending))
+    if any(not d for d in devices) or len(set(devices)) != len(devices) or count > len(devices):
+        raise ValueError('Not enough distinct visible GPUs for workers')
     output_path.parent.mkdir(parents=True, exist_ok=True)
     context = mp.get_context('spawn')
     tasks, results = context.Queue(), context.Queue()
@@ -414,10 +397,10 @@ def run_parallel(args, samples, output_path, settings):
     try:
         for task in pending:
             tasks.put(task)
-        for index in range(min(args.num_workers, len(pending))):
+        for index in range(count):
             tasks.put(None)
             process = context.Process(target=inference_worker, name=f'gpu-{devices[index]}',
-                args=(devices[index].strip(), tasks, results, args, output_path, settings))
+                args=(devices[index], tasks, results, args, output_path, settings))
             process.start()
             workers.append(process)
         while completed < len(pending):
@@ -463,11 +446,10 @@ def main():
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--sample-ids', type=int, nargs='+', help='Optional subset for smoke runs')
-    parser.add_argument('--num-workers', type=int, default=1, help='Independent single-GPU workers; each uses batch size 1')
-    parser.add_argument('--gpu-memory-gib', type=int, default=60)
+    parser.add_argument('--num-workers', type=int, default=os.environ.get('NUM_WORKERS'), help='Default: one independent worker per visible GPU')
     parser.add_argument('--image-shape', type=int, nargs=2, default=[1024, 1024], metavar=('HEIGHT', 'WIDTH'))
-    parser.add_argument('--max-text-tokens', type=int, default=2048)
-    parser.add_argument('--max-images', type=int, default=12, help='Safety cap, not the requested image count')
+    parser.add_argument('--max-text-tokens', type=int, default=1024)
+    parser.add_argument('--max-images', type=int, default=10, help='Safety cap, not the requested image count')
     parser.add_argument('--temperature', type=float, default=0.0, help='0 selects greedy text decoding')
     parser.add_argument('--num-timesteps', type=int, default=50)
     parser.add_argument('--timestep-shift', type=float, default=3.0)
@@ -480,6 +462,8 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
     if Path(args.model_name).name != args.model_name or args.model_name in ('.', '..'):
         parser.error('--model-name must be a single directory name')
+    if args.num_workers is None:
+        args.num_workers = torch.cuda.device_count()
     if args.num_workers < 1:
         parser.error('--num-workers must be positive')
     if args.max_text_tokens < 1 or args.max_images < 1 or args.num_timesteps < 2 or args.temperature < 0:
@@ -499,15 +483,11 @@ def main():
     weights = Path(args.checkpoint) if args.checkpoint else Path(args.model_path) / 'ema.safetensors'
     settings.update(model_path=str(Path(args.model_path).resolve()), checkpoint=str(weights.resolve()),
                     checkpoint_mtime_ns=weights.stat().st_mtime_ns,
-                    benchmark_sha256=hashlib.sha256(Path(args.benchmark).read_bytes()).hexdigest())
+                    seed_scheme='fixed-v1')
     output_path = Path(args.output_dir) / args.model_name / (Path(args.benchmark).stem + '.jsonl')
     if output_path.exists() and not args.resume:
         raise FileExistsError(f'Use --resume or a new output directory: {output_path}')
-    if args.num_workers > 1:
-        return run_parallel(args, samples, output_path, settings)
-    generator = load_generator(args.model_path, args.checkpoint, args.gpu_memory_gib, args.bagel_repo)
-    return run_benchmark(generator, samples, output_path, model_name=args.model_name,
-                         eval_set=Path(args.benchmark).stem, settings=settings, resume=args.resume)
+    return run_parallel(args, samples, output_path, settings)
 
 
 if __name__ == '__main__':
