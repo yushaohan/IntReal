@@ -137,7 +137,7 @@ Open `http://127.0.0.1:8420`. The viewer reads `benchmark/`, `outputs/`, and `re
 
 ## 🙏 Acknowledgement
 
-We thank the teams behind Bagel, Emu3.5, and SenseNova-U1 for their contributions to open-source unified multimodal models (UMMs). We also thank the Flow-Factory team for providing the reinforcement learning training framework.
+We thank the teams behind [Bagel](https://github.com/ByteDance-Seed/Bagel), [Emu3.5](https://github.com/baaivision/Emu3.5), and [SenseNova-U1](https://github.com/OpenSenseNova/SenseNova-U1) for their contributions to open-source unified multimodal models (UMMs). We also thank the [Flow-Factory](https://github.com/X-GenGroup/Flow-Factory) team for providing the reinforcement learning training framework, and the [SEED-Story](https://github.com/TencentARC/SEED-Story) team for collecting and releasing interleaved image-text storytelling data.
 
 ## ©️ Licence
 
