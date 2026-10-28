@@ -89,7 +89,7 @@ body {
   gap: 44px;
   padding: clamp(34px, 8vh, 90px) clamp(28px, 8.2vw, 168px) clamp(28px, 5vh, 56px);
 }
-.paper, .resources { width: 100%; max-width: 1584px; }
+.paper, .hero-bottom { width: 100%; max-width: 1584px; }
 h1 { margin: 0; font-weight: 700; }
 .project-name {
   display: block;
@@ -142,35 +142,37 @@ sup { position: relative; top: -.06em; font-size: .57em; font-weight: 400; font-
 }
 .affiliations sup { margin-right: .24em; margin-left: 0; }
 
+.hero-bottom { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.hero-logo { display: block; flex: 0 0 auto; width: clamp(170px, 12vw, 230px); height: auto; }
 .resources {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .resource {
   display: inline-flex;
   flex: 0 0 auto;
   justify-content: center;
   align-items: center;
-  gap: 9px;
-  min-width: 132px;
-  min-height: 54px;
-  padding: 13px 20px;
+  gap: 8px;
+  min-width: 106px;
+  min-height: 44px;
+  padding: 10px 15px;
   border: 1px solid #fff;
   border-radius: 999px;
   background: #fff;
   color: #111;
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
   font-weight: 600;
   white-space: nowrap;
   box-shadow: 0 4px 22px #0002;
   transition: background .2s ease, transform .2s ease;
 }
-.resource-icon { display: block; flex-shrink: 0; width: 22px; height: 22px; object-fit: contain; }
+.resource-icon { display: block; flex-shrink: 0; width: 18px; height: 18px; object-fit: contain; }
 .resource-name { line-height: 1; }
 .resource[aria-disabled="true"] { cursor: default; }
 .resource:hover { background: #f1f1f1; transform: translateY(-2px); }
@@ -178,6 +180,7 @@ sup { position: relative; top: -.06em; font-size: .57em; font-weight: 400; font-
 
 @keyframes drift { to { transform: translate3d(-50%, 0, 0); } }
 @media (min-width: 2100px) { .hero { padding-left: max(8.2vw, calc((100vw - 1584px) / 2)); } }
+@media (max-width: 1200px) { .hero-logo { display: none; } }
 @media (max-width: 1000px) {
   .hero { padding-left: 6vw; padding-right: 6vw; }
   .paper-title { font-size: clamp(29px, 3.6vw, 38px); }
@@ -193,9 +196,9 @@ sup { position: relative; top: -.06em; font-size: .57em; font-weight: 400; font-
   .authors { font-size: 20px; line-height: 1.5; }
   .author-row { gap: 0 17px; }
   .affiliations { grid-template-columns: 1fr; font-size: 15px; row-gap: 5px; margin-top: 20px; }
-  .resources { gap: 10px; }
-  .resource { min-width: 124px; min-height: 48px; padding: 12px 18px; gap: 8px; font-size: 16px; }
-  .resource-icon { width: 20px; height: 20px; }
+  .resources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 10px; }
+  .resource { min-width: 0; min-height: 42px; padding: 10px 14px; gap: 7px; font-size: 14px; }
+  .resource-icon { width: 18px; height: 18px; }
 }
 @media (max-width: 420px) {
   .hero { padding: 28px 23px 22px; gap: 25px; }
@@ -705,13 +708,16 @@ body.modal-open { overflow: hidden; }
 .footer-intro { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
 .footer-intro h2 { margin: 0; color: var(--accent); font-size: 44px; font-style: italic; }
 .footer-intro p { margin: 0; color: #c8c9cb; font-size: 21px; line-height: 1.5; }
-.footer-resources { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 30px 0 36px; }
-.footer-resources a { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 18px; border: 1px solid #fffdf8; border-radius: 999px; background: #fffdf8; color: #151515; font: 600 14px/1.2 Arial, Helvetica, sans-serif; text-decoration: none; white-space: nowrap; transition: background .2s ease, border-color .2s ease; }
-.footer-resources img { flex-shrink: 0; }
+.footer-resources { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 30px 0 36px; }
+.footer-resources a { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 14px; border: 1px solid #fffdf8; border-radius: 999px; background: #fffdf8; color: #151515; font: 600 13px/1.2 Arial, Helvetica, sans-serif; text-decoration: none; white-space: nowrap; transition: background .2s ease, border-color .2s ease; }
+.footer-resources img { flex-shrink: 0; width: 18px; height: 18px; }
 .footer-resources a:hover { background: #f8dfc9; border-color: var(--accent); }
-.footer-contact { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-top: 25px; border-top: 1px solid #ffffff20; font: 13px/1.6 Arial, Helvetica, sans-serif; }
+.footer-contact { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding-top: 25px; border-top: 1px solid #ffffff20; font: 13px/1.6 Arial, Helvetica, sans-serif; }
 .footer-contact p { margin: 0; color: #aeb1b5; }
-.footer-emails { display: flex; gap: clamp(20px, 3vw, 50px); flex-wrap: wrap; }
+.footer-contact-details { display: flex; align-items: center; justify-content: space-between; gap: clamp(20px, 3vw, 48px); }
+.footer-emails { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.footer-emails a { white-space: nowrap; }
+.footer-logo { display: block; flex: 0 0 auto; width: 190px; height: auto; }
 .footer-emails a { color: #e2e3e4; text-decoration-color: #ffffff40; text-underline-offset: 5px; }
 .footer-emails a:hover { color: var(--accent); }
 .footer-resources a:focus-visible, .footer-emails a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
@@ -728,7 +734,7 @@ body.modal-open { overflow: hidden; }
   .footer-intro p { margin-top: 10px; }
   .footer-resources { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-contact { display: block; }
-  .footer-emails { margin-top: 15px; }
+  .footer-contact-details { margin-top: 18px; }
 }
 @media (max-width: 760px) {
   .reliability-section { padding: 42px 24px; }
@@ -746,8 +752,10 @@ body.modal-open { overflow: hidden; }
   .project-footer { padding: 40px 24px 32px; }
   .footer-intro p { font-size: 19px; }
   .footer-resources { gap: 12px; }
-  .footer-resources a { padding: 14px 10px; font-size: 12px; gap: 7px; }
+  .footer-resources a { padding: 11px 10px; font-size: 12px; gap: 7px; }
   .footer-emails { flex-direction: column; gap: 12px; }
+  .footer-contact-details { gap: 16px; }
+  .footer-logo { width: clamp(84px, 26vw, 140px); }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
   .reliability-grid { grid-template-columns: 1fr; gap: 24px; }
