@@ -21,7 +21,9 @@
 </div>
 
 ## 🔥 News & Updates
-Coming Soon
+
+- **[2026.10.30]** Our [paper](https://arxiv.org/abs/2610.38425) is now available on arXiv!
+- **[2026.10.30]** Day-0 release: our dataset, leaderboard, and fine-tuned models are available on [Hugging Face](https://huggingface.co/collections/yushaohan/intreal). Try them out! We welcome your feedback!
 
 ## 🚀 Quick Start
 
@@ -152,4 +154,15 @@ If you plan to use IntReal for commercial purposes, please let me know at [shaoh
 For a faster response, we recommend contacting the first author Shaohan at [shaohan.yu@smail.nju.edu.cn](mailto:shaohan.yu@smail.nju.edu.cn). If you prefer to communicate in Chinese, you can also reach him on WeChat: `SeanShaohanYu`. Alternatively, you may contact the corresponding author Chenyang at [chenyang.si@nju.edu.cn](mailto:chenyang.si@nju.edu.cn).
 
 ## 📑 Citation
-Coming Soon
+
+```
+@misc{yu2026intrealrealworlddatasetbenchmark,
+      title={IntReal: A Real-World Dataset and Benchmark for Multimodal Interleaved Generation}, 
+      author={Shaohan Yu and Jie Qin and Wende Tan and Haiwen Diao and Limeng Qiao and Yueming Lyu and Chenyang Si},
+      year={2026},
+      eprint={2610.38425},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2610.38425}, 
+}
+```
