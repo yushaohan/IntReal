@@ -16,7 +16,7 @@
 <sup>3</sup> [Imperial College London](https://www.imperial.ac.uk/) &nbsp;
 <sup>4</sup> [S-Lab, Nanyang Technological University](https://www.ntu.edu.sg/s-lab)
 
-📄 Paper (Coming Soon) · 🌐 [Project Page](https://yushaohan.github.io/IntReal/) · 🤗 [Models](https://huggingface.co/collections/yushaohan/intreal) · 🤗 [Dataset](https://huggingface.co/datasets/yushaohan/IntReal-100K)
+📄 [Paper](https://arxiv.org/abs/2610.38425) · 🌐 [Project Page](https://yushaohan.github.io/IntReal/) · 🤗 [Models](https://huggingface.co/collections/yushaohan/intreal) · 🤗 [Dataset](https://huggingface.co/datasets/yushaohan/IntReal-100K)
 <br>
 🏆 [Leaderboard](https://huggingface.co/spaces/yushaohan/IntReal-Leaderboard) · 🎬 Video (Coming Soon)
 
