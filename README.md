@@ -20,6 +20,8 @@
 
 </div>
 
+https://github.com/user-attachments/assets/7a142e99-beb8-4668-98f0-6f254f59f18b
+
 ## 🔥 News & Updates
 
 - **[2026.10.30]** Our [paper](https://arxiv.org/abs/2610.38425) is now available on arXiv!
