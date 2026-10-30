@@ -20,7 +20,7 @@
 
 </div>
 
-https://github.com/user-attachments/assets/7a142e99-beb8-4668-98f0-6f254f59f18b
+https://github.com/user-attachments/assets/b6ea07e2-7b92-472b-9eb9-31077336ac32
 
 ## 🔥 News & Updates
 
