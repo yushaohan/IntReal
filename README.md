@@ -18,7 +18,7 @@
 
 📄 [Paper](https://arxiv.org/abs/2610.38425) · 🌐 [Project Page](https://yushaohan.github.io/IntReal/) · 🤗 [Models](https://huggingface.co/collections/yushaohan/intreal) · 🤗 [Dataset](https://huggingface.co/datasets/yushaohan/IntReal-100K)
 <br>
-🏆 [Leaderboard](https://huggingface.co/spaces/yushaohan/IntReal-Leaderboard) · 🎬 Video (Coming Soon)
+🏆 [Leaderboard](https://huggingface.co/spaces/yushaohan/IntReal-Leaderboard) · 🎬 [Video](https://youtu.be/ZYkxaL8wa9Q)
 
 </div>
 
